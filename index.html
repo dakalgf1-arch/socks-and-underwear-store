@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -12,9 +12,18 @@
         .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         .product img { width: 100%; height: 320px; object-fit: cover; }
         .info { padding: 15px; text-align: center; }
-        button { background: #ff4757; color: white; border: none; padding: 12px; margin: 8px 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #ff3838; }
-        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); max-width: 320px; z-index: 100; }
+        button { border: none; padding: 12px; margin: 8px 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        button:hover { opacity: 0.9; }
+
+        /* Кошик у стилі Rozetka */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; }
+        .cart-content { background: white; margin: 2% auto; width: 90%; max-width: 900px; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
+        .cart-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .cart-item { display: flex; padding: 15px 20px; border-bottom: 1px solid #eee; align-items: center; }
+        .cart-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin-right: 15px; }
+        .quantity { display: flex; align-items: center; gap: 8px; }
+        .quantity button { width: 30px; height: 30px; padding: 0; background: #eee; }
+        .total { padding: 20px; background: #f8f9fa; text-align: right; font-size: 1.2em; }
     </style>
 </head>
 <body>
@@ -32,7 +41,7 @@
                 <div class="info">
                     <h3>Жіночі трусики (сліпи)</h3>
                     <p><strong>449 грн</strong></p>
-                    <button onclick="addToCart('Жіночі трусики (сліпи)', 449)">Купити</button>
+                    <button onclick="addToCart(0)" style="background:#ff4757; color:white; width:90%;">Купити</button>
                 </div>
             </div>
 
@@ -41,38 +50,130 @@
                 <div class="info">
                     <h3>Жіночі трусики (висока посадка)</h3>
                     <p><strong>479 грн</strong></p>
-                    <button onclick="addToCart('Жіночі трусики висока посадка', 479)">Купити</button>
-                </div>
-            </div>
-
-            <div class="product">
-                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki3.jpg" alt="Жіночі трусики">
-                <div class="info">
-                    <h3>Жіночі трусики (набір 3 шт)</h3>
-                    <p><strong>1190 грн</strong></p>
-                    <button onclick="addToCart('Набір жіночих трусиків 3 шт', 1190)">Купити</button>
+                    <button onclick="addToCart(1)" style="background:#ff4757; color:white; width:90%;">Купити</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Кошик (скорочено) -->
-    <div class="cart" id="cart">
-        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
-        <p><strong>Разом: <span id="total">0</span> грн</strong></p>
-        <button onclick="alert('Кошик працює! Додай товари і натисни ще раз')">Оформити замовлення</button>
+    <!-- Кошик (модальне вікно як на Rozetka) -->
+    <div class="modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>🛒 Ваш кошик (<span id="cart-count">0</span>)</h2>
+                <button onclick="closeCart()" style="background:none; font-size:28px; cursor:pointer;">✕</button>
+            </div>
+            
+            <div id="cart-items"></div>
+            
+            <div class="total">
+                <strong>Разом: <span id="cart-total">0</span> грн</strong><br><br>
+                <button onclick="showOrderForm()" style="background:#27ae60; color:white; padding:15px 30px; font-size:18px;">Оформити замовлення</button>
+                <button onclick="closeCart()" style="background:#95a5a6; color:white; padding:15px 30px; font-size:18px;">Продовжити покупки</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Форма замовлення -->
+    <div class="modal" id="orderModal" style="display:none;">
+        <div style="background:white; margin:5% auto; padding:30px; width:90%; max-width:500px; border-radius:12px;">
+            <h2>Оформлення замовлення</h2>
+            <form onsubmit="submitOrder(event)">
+                <p id="modal-products"></p>
+                <input type="text" placeholder="Ваше ім'я" required style="width:100%; padding:10px; margin:10px 0;"><br>
+                <input type="tel" value="+380995461915" required style="width:100%; padding:10px; margin:10px 0;"><br>
+                <input type="text" placeholder="Адреса доставки (Нова Пошта / Укрпошта)" required style="width:100%; padding:10px; margin:10px 0;"><br>
+                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px;">Надіслати замовлення</button>
+                <button type="button" onclick="closeOrderModal()" style="background:#95a5a6; color:white; width:100%; padding:15px; margin-top:10px;">Скасувати</button>
+            </form>
+        </div>
     </div>
 
     <script>
         let cart = [];
-        function addToCart(name, price) {
-            cart.push({name, price});
-            document.getElementById('count').textContent = cart.length;
-            let total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('total').textContent = total;
-            alert(name + " додано в кошик ✅");
+        const products = [
+            {id:0, name:"Жіночі трусики (сліпи)", price:449, img:"https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki1.jpg"},
+            {id:1, name:"Жіночі трусики (висока посадка)", price:479, img:"https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki2.jpg"}
+        ];
+
+        function addToCart(id) {
+            const prod = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({...prod, quantity: 1});
+            }
+            alert(prod.name + " додано в кошик ✅");
+            updateCart();
+        }
+
+        function updateCart() {
+            const itemsDiv = document.getElementById('cart-items');
+            itemsDiv.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+                itemsDiv.innerHTML += `
+                    <div class="cart-item">
+                        <img src="\( {item.img}" alt=" \){item.name}">
+                        <div style="flex:1;">
+                            <strong>${item.name}</strong><br>
+                            ${item.price} грн
+                        </div>
+                        <div class="quantity">
+                            <button onclick="changeQty(${index}, -1)">–</button>
+                            <span style="min-width:30px; text-align:center;">${item.quantity}</span>
+                            <button onclick="changeQty(${index}, 1)">+</button>
+                            <button onclick="removeItem(${index})" style="background:#e74c3c; color:white; margin-left:15px;">Видалити</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('cart-count').textContent = cart.length;
+            document.getElementById('cart-total').textContent = total;
+        }
+
+        function changeQty(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity < 1) cart[index].quantity = 1;
+            updateCart();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function openCart() {
+            updateCart();
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            document.getElementById('modal-products').innerHTML = `<strong>Товары:</strong><br>` + cart.map(i => `• ${i.name} — ${i.quantity} шт`).join('<br>');
+            document.getElementById('orderModal').style.display = 'block';
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            alert("✅ Замовлення прийнято! Ми скоро зв'яжемося з вами.");
+            cart = [];
+            closeOrderModal();
+            closeCart();
         }
     </script>
 </body>
-</html>
+</html>      
