@@ -5,30 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f8f9fa; }
-        h1 { color: #ff4757; text-align: center; }
-        .product { background: white; padding: 15px; margin: 15px auto; max-width: 400px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-        button { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
+        header { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); color: white; padding: 25px; text-align: center; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .product img { width: 100%; height: 300px; object-fit: cover; }
+        .info { padding: 15px; text-align: center; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #ff3838; }
+
+        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1000; min-width: 280px; }
     </style>
 </head>
 <body>
-    <h1>🧦 Шкарпетки & Труси</h1>
-    <p style="text-align:center;">Комфортна білизна</p>
+    <header>
+        <h1>🧦 Шкарпетки & Труси</h1>
+        <p>Комфортна білизна</p>
+    </header>
 
-    <div class="product">
-        <h3>Жіночі трусики (сліпи)</h3>
-        <p><strong>449 грн</strong></p>
-        <button onclick="alert('✅ Додано в кошик! (тест)')">Купити</button>
+    <div class="container">
+        <h2>Популярні товари</h2>
+        <div class="products">
+
+            <div class="product">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki1.jpg" alt="Трусики">
+                <div class="info">
+                    <h3>Жіночі трусики (сліпи)</h3>
+                    <p><strong>449 грн</strong></p>
+                    <button onclick="addToCart('Жіночі трусики (сліпи)', 449)">Купити</button>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki2.jpg" alt="Трусики">
+                <div class="info">
+                    <h3>Жіночі трусики (висока посадка)</h3>
+                    <p><strong>479 грн</strong></p>
+                    <button onclick="addToCart('Жіночі трусики висока посадка', 479)">Купити</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <div class="product">
-        <h3>Жіночі трусики (висока посадка)</h3>
-        <p><strong>479 грн</strong></p>
-        <button onclick="alert('✅ Додано в кошик! (тест)')">Купити</button>
+    <!-- Простий кошик -->
+    <div class="cart" id="cart">
+        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
+        <div id="cart-items"></div>
+        <p><strong>Сума: <span id="total">0</span> грн</strong></p>
+        <button onclick="sendOrder()" style="background:#27ae60; width:100%; padding:15px;">Оформити замовлення</button>
     </div>
 
-    <p style="text-align:center; margin-top:30px; color:#666;">
-        Кошик поки що в тестовому режимі. Натисни кнопку — має з'явитись повідомлення.
-    </p>
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            alert(name + " додано в кошик ✅");
+        }
+
+        function updateCart() {
+            let itemsHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                itemsHTML += `<p>${item.name} — ${item.price} грн 
+                    <button onclick="removeItem(${index})" style="color:red;">×</button></p>`;
+            });
+
+            document.getElementById('cart-items').innerHTML = itemsHTML;
+            document.getElementById('count').textContent = cart.length;
+            document.getElementById('total').textContent = total;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function sendOrder() {
+            if (cart.length === 0) {
+                alert("Кошик порожній!");
+                return;
+            }
+
+            let orderText = "Нове замовлення:\n\n";
+            let total = 0;
+
+            cart.forEach(item => {
+                orderText += `• ${item.name} — ${item.price} грн\n`;
+                total += item.price;
+            });
+
+            orderText += `\nЗагальна сума: ${total} грн\n`;
+            orderText += `\nДата: ${new Date().toLocaleString('uk-UA')}`;
+
+            const email = "dakalgf1@gmail.com";
+            const subject = "Нове замовлення з сайту Shkarpetky & Труси";
+            
+            const mailtoLink = `mailto:\( {email}?subject= \){encodeURIComponent(subject)}&body=${encodeURIComponent(orderText)}`;
+            
+            window.location.href = mailtoLink;
+            
+            // Очищаємо кошик після відправки
+            setTimeout(() => {
+                cart = [];
+                updateCart();
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
