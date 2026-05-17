@@ -3,43 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shkarpetky & Труси - Стильний Магазин</title>
+    <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f8f9fa; color: #333; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; color: #333; }
         header { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); color: white; padding: 2rem; text-align: center; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .product { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .product img { width: 100%; height: 200px; object-fit: cover; }
-        .info { padding: 15px; }
-        button { background: #ff6b6b; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .product img { width: 100%; height: 320px; object-fit: cover; }
+        .info { padding: 15px; text-align: center; }
+        button { background: #ff4757; color: white; border: none; padding: 12px; margin: 8px 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #ff3838; }
+        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); max-width: 300px; z-index: 100; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; }
+        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 90%; max-width: 500px; border-radius: 15px; }
     </style>
 </head>
 <body>
     <header>
         <h1>🧦 Шкарпетки & Труси</h1>
-        <p>Стильна білизна для кожного дня</p>
+        <p>Стильна та комфортна білизна</p>
     </header>
+
     <div class="container">
         <h2>Популярні товари</h2>
         <div class="products">
+
+            <!-- Жіночі трусики -->
             <div class="product">
-                <img src="https://picsum.photos/300/200?random=1" alt="Носки">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki.jpg" alt="Жіночі трусики">
                 <div class="info">
-                    <h3>Комплект стильних носків</h3>
-                    <p>299 грн</p>
-                    <button>Купити</button>
+                    <h3>Жіночі трусики (сліпи)</h3>
+                    <p><strong>449 грн</strong></p>
+                    <p>Темно-сині • Висока посадка • Комфорт</p>
+                    <button onclick="addToCart('Жіночі трусики (сліпи)', 449)">Купити</button>
                 </div>
             </div>
-            <div class="product">
-                <img src="https://picsum.photos/300/200?random=2" alt="Труси">
-                <div class="info">
-                    <h3>Боксери преміум</h3>
-                    <p>449 грн</p>
-                    <button>Купити</button>
-                </div>
-            </div>
+
         </div>
     </div>
+
+    <!-- Кошик -->
+    <div class="cart" id="cart">
+        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
+        <div id="cart-items"></div>
+        <p><strong>Разом: <span id="total">0</span> грн</strong></p>
+        <button onclick="showOrderForm()" style="background:#27ae60; width:100%;">Оформити замовлення</button>
+    </div>
+
+    <!-- Форма замовлення -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <h2>Оформлення замовлення</h2>
+            <form onsubmit="submitOrder(event)">
+                <p>Товар: <strong id="modal-product"></strong></p>
+                <label>Ім'я:</label><input type="text" required><br><br>
+                <label>Телефон:</label><input type="tel" value="+380995461915" required><br><br>
+                <label>Адреса доставки:</label><input type="text" required><br><br>
+                <button type="submit" style="background:#27ae60; width:100%;">Надіслати запит</button>
+                <button type="button" onclick="closeModal()">Скасувати</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            alert(name + " додано в кошик!");
+        }
+
+        function updateCart() {
+            document.getElementById('count').textContent = cart.length;
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('total').textContent = total;
+        }
+
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            document.getElementById('modal-product').textContent = cart.map(i => i.name).join(", ");
+            document.getElementById('orderModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            alert("✅ Запит на покупку надіслано! Ми скоро зв'яжемося з вами.");
+            cart = [];
+            updateCart();
+            closeModal();
+        }
+    </script>
 </body>
 </html>
