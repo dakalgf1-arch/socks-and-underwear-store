@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -15,101 +15,63 @@
         button { background: #ff4757; color: white; border: none; padding: 12px; margin: 8px 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
         button:hover { background: #ff3838; }
         .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); max-width: 320px; z-index: 100; }
-        .back-btn { background: #4ecdc4; margin: 10px 0; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 90%; max-width: 500px; border-radius: 15px; }
     </style>
 </head>
 <body>
     <header>
         <h1>🧦 Шкарпетки & Труси</h1>
-        <p>Комфортна білизна за доступними цінами</p>
+        <p>Комфортна білизна для кожного дня</p>
     </header>
 
     <div class="container">
-        <button class="back-btn" onclick="window.location.reload()">← Повернутися до товарів</button>
-        
         <h2>Наші товари</h2>
         <div class="products">
 
-            <!-- Жіночі трусики -->
             <div class="product">
-                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki.jpg" alt="Жіночі трусики">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki1.jpg" alt="Жіночі трусики">
                 <div class="info">
                     <h3>Жіночі трусики (сліпи)</h3>
                     <p><strong>449 грн</strong></p>
-                    <p>Темно-сині • Висока посадка • М'яка тканина</p>
                     <button onclick="addToCart('Жіночі трусики (сліпи)', 449)">Купити</button>
                 </div>
             </div>
 
-            <!-- Інші товари (можеш додавати) -->
             <div class="product">
-                <img src="https://picsum.photos/300/320?random=1" alt="Носки">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki2.jpg" alt="Жіночі трусики">
                 <div class="info">
-                    <h3>Комплект чоловічих носків (3 пари)</h3>
-                    <p><strong>299 грн</strong></p>
-                    <button onclick="addToCart('Комплект носків', 299)">Купити</button>
+                    <h3>Жіночі трусики (висока посадка)</h3>
+                    <p><strong>479 грн</strong></p>
+                    <button onclick="addToCart('Жіночі трусики висока посадка', 479)">Купити</button>
+                </div>
+            </div>
+
+            <div class="product">
+                <img src="https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki3.jpg" alt="Жіночі трусики">
+                <div class="info">
+                    <h3>Жіночі трусики (набір 3 шт)</h3>
+                    <p><strong>1190 грн</strong></p>
+                    <button onclick="addToCart('Набір жіночих трусиків 3 шт', 1190)">Купити</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Кошик -->
+    <!-- Кошик (скорочено) -->
     <div class="cart" id="cart">
         <h3>🛒 Кошик (<span id="count">0</span>)</h3>
-        <div id="cart-items"></div>
         <p><strong>Разом: <span id="total">0</span> грн</strong></p>
-        <button onclick="showOrderForm()" style="background:#27ae60; width:100%;">Оформити замовлення</button>
-    </div>
-
-    <!-- Форма замовлення -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <h2>Оформлення замовлення</h2>
-            <form onsubmit="submitOrder(event)">
-                <p>Товар: <strong id="modal-product"></strong></p>
-                <label>Ім'я:</label><input type="text" required><br><br>
-                <label>Телефон:</label><input type="tel" value="+380995461915" required><br><br>
-                <label>Адреса доставки:</label><input type="text" required><br><br>
-                <button type="submit" style="background:#27ae60; width:100%;">Надіслати запит</button>
-                <button type="button" onclick="closeModal()" style="background:#95a5a6;">Скасувати</button>
-            </form>
-        </div>
+        <button onclick="alert('Кошик працює! Додай товари і натисни ще раз')">Оформити замовлення</button>
     </div>
 
     <script>
         let cart = [];
-
         function addToCart(name, price) {
             cart.push({name, price});
-            updateCart();
-            alert(name + " додано в кошик ✅");
-        }
-
-        function updateCart() {
             document.getElementById('count').textContent = cart.length;
             let total = cart.reduce((sum, item) => sum + item.price, 0);
             document.getElementById('total').textContent = total;
-        }
-
-        function showOrderForm() {
-            if (cart.length === 0) return alert("Кошик порожній!");
-            document.getElementById('modal-product').textContent = cart.map(i => i.name).join(", ");
-            document.getElementById('orderModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
-
-        function submitOrder(e) {
-            e.preventDefault();
-            alert("✅ Запит на покупку надіслано! Ми скоро зв'яжемося з вами.");
-            cart = [];
-            updateCart();
-            closeModal();
+            alert(name + " додано в кошик ✅");
         }
     </script>
 </body>
