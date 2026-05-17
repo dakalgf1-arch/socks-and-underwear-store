@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -12,10 +12,8 @@
         .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         .product img { width: 100%; height: 300px; object-fit: cover; }
         .info { padding: 15px; text-align: center; }
-        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #ff3838; }
-
-        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1000; min-width: 280px; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; }
+        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); min-width: 280px; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -49,12 +47,35 @@
         </div>
     </div>
 
-    <!-- Простий кошик -->
+    <!-- Кошик -->
     <div class="cart" id="cart">
         <h3>🛒 Кошик (<span id="count">0</span>)</h3>
         <div id="cart-items"></div>
         <p><strong>Сума: <span id="total">0</span> грн</strong></p>
-        <button onclick="sendOrder()" style="background:#27ae60; width:100%; padding:15px;">Оформити замовлення</button>
+        <button onclick="showOrderForm()" style="background:#27ae60; width:100%; padding:12px;">Оформити замовлення</button>
+    </div>
+
+    <!-- Форма замовлення -->
+    <div id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:2000;">
+        <div style="background:white; margin:5% auto; padding:25px; width:90%; max-width:500px; border-radius:12px;">
+            <h2>Оформлення замовлення</h2>
+            <form onsubmit="sendOrder(event)">
+                <div id="modal-cart-items"></div>
+                <p><strong>Загальна сума: <span id="modal-total">0</span> грн</strong></p>
+                
+                <label>Ім'я та Прізвище:</label><br>
+                <input type="text" id="customer-name" required style="width:100%; padding:10px; margin:8px 0;"><br>
+                
+                <label>Телефон:</label><br>
+                <input type="tel" id="customer-phone" value="+380995461915" required style="width:100%; padding:10px; margin:8px 0;"><br>
+                
+                <label>Адреса доставки:</label><br>
+                <input type="text" id="customer-address" placeholder="Місто, відділення Нової Пошти або адреса" required style="width:100%; padding:10px; margin:8px 0;"><br>
+                
+                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; font-size:17px;">Надіслати замовлення на пошту</button>
+            </form>
+            <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:10px;">Скасувати</button>
+        </div>
     </div>
 
     <script>
@@ -67,54 +88,67 @@
         }
 
         function updateCart() {
-            let itemsHTML = '';
+            let html = '';
             let total = 0;
-
-            cart.forEach((item, index) => {
+            cart.forEach((item, i) => {
                 total += item.price;
-                itemsHTML += `<p>${item.name} — ${item.price} грн 
-                    <button onclick="removeItem(${index})" style="color:red;">×</button></p>`;
+                html += `<p>${item.name} — ${item.price} грн</p>`;
             });
-
-            document.getElementById('cart-items').innerHTML = itemsHTML;
+            document.getElementById('cart-items').innerHTML = html;
             document.getElementById('count').textContent = cart.length;
             document.getElementById('total').textContent = total;
         }
 
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function sendOrder() {
-            if (cart.length === 0) {
-                alert("Кошик порожній!");
-                return;
-            }
-
-            let orderText = "Нове замовлення:\n\n";
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            
+            let itemsHtml = '<strong>Замовлення:</strong><br>';
             let total = 0;
-
             cart.forEach(item => {
-                orderText += `• ${item.name} — ${item.price} грн\n`;
+                itemsHtml += `• ${item.name} — ${item.price} грн<br>`;
                 total += item.price;
             });
+            
+            document.getElementById('modal-cart-items').innerHTML = itemsHtml;
+            document.getElementById('modal-total').textContent = total;
+            document.getElementById('orderModal').style.display = 'block';
+        }
 
-            orderText += `\nЗагальна сума: ${total} грн\n`;
-            orderText += `\nДата: ${new Date().toLocaleString('uk-UA')}`;
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
 
-            const email = "dakalgf1@gmail.com";
-            const subject = "Нове замовлення з сайту Shkarpetky & Труси";
+        function sendOrder(e) {
+            e.preventDefault();
             
-            const mailtoLink = `mailto:\( {email}?subject= \){encodeURIComponent(subject)}&body=${encodeURIComponent(orderText)}`;
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
             
-            window.location.href = mailtoLink;
+            let body = `Нове замовлення з сайту!\n\n`;
+            body += `Покупець: ${name}\n`;
+            body += `Телефон: ${phone}\n`;
+            body += `Адреса: ${address}\n\n`;
+            body += `Товари:\n`;
             
-            // Очищаємо кошик після відправки
+            let total = 0;
+            cart.forEach(item => {
+                body += `• ${item.name} — ${item.price} грн\n`;
+                total += item.price;
+            });
+            
+            body += `\nЗагальна сума: ${total} грн\n`;
+            body += `Дата: ${new Date().toLocaleString('uk-UA')}`;
+
+            const mailto = `mailto:dakalgf1@gmail.com?subject=Нове замовлення Shkarpetky & Труси&body=${encodeURIComponent(body)}`;
+            window.location.href = mailto;
+
             setTimeout(() => {
                 cart = [];
                 updateCart();
-            }, 1000);
+                closeModal();
+                alert("Замовлення відправлено на dakalgf1@gmail.com");
+            }, 800);
         }
     </script>
 </body>
