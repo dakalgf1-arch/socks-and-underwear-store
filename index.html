@@ -31,7 +31,6 @@
         <p>Комфортна білизна за доступними цінами</p>
     </header>
 
-    <!-- Вкладки -->
     <div class="tabs">
         <div class="tab active" id="tab-socks" onclick="showCategory('socks')">🧦 Шкарпетки</div>
         <div class="tab" id="tab-underwear" onclick="showCategory('underwear')">👙 Труси</div>
@@ -39,9 +38,7 @@
 
     <div class="container">
         <h2 id="category-title">Шкарпетки</h2>
-        <div class="products" id="products-container">
-            <!-- Товари будуть підвантажуватися через JS -->
-        </div>
+        <div class="products" id="products-container"></div>
     </div>
 
     <!-- Кошик -->
@@ -49,16 +46,16 @@
         <h3>🛒 Кошик (<span id="count">0</span>)</h3>
         <div id="cart-items"></div>
         <p><strong>Сума: <span id="total">0</span> грн</strong></p>
-        <button onclick="showOrderForm()" style="background:#27ae60; width:100%;">Оформити замовлення</button>
+        <button onclick="showOrderForm()" style="background:#27ae60; width:100%; margin-bottom:8px;">Оформити замовлення</button>
         <button onclick="clearCart()" style="background:#e74c3c; width:100%;">🗑 Анулювати кошик</button>
     </div>
 
-    <!-- Форма замовлення (та сама як раніше) -->
+    <!-- Форма замовлення -->
     <div id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:2000;">
         <div style="background:white; margin:5% auto; padding:25px; width:90%; max-width:500px; border-radius:12px;">
             <h2>Оформлення замовлення</h2>
             <form onsubmit="sendOrder(event)">
-                <div id="modal-cart-items"></div>
+                <div id="modal-cart-items" style="margin-bottom:15px;"></div>
                 <p><strong>Загальна сума: <span id="modal-total">0</span> грн</strong></p>
                 
                 <label>Ім'я та Прізвище:</label><br>
@@ -70,9 +67,9 @@
                 <label>Адреса доставки:</label><br>
                 <input type="text" id="customer-address" placeholder="Місто, відділення Нової Пошти" required style="width:100%; padding:10px; margin:8px 0;"><br>
                 
-                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px;">Надіслати на dakalgf1@gmail.com</button>
+                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; margin-top:10px;">Надіслати на dakalgf1@gmail.com</button>
             </form>
-            <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:10px;">Скасувати</button>
+            <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:8px;">Скасувати</button>
         </div>
     </div>
 
@@ -82,12 +79,12 @@
 
         const products = {
             socks: [
-                {name: "Комплект чоловічих носків (3 пари)", price: 299, img: "https://picsum.photos/300/300?random=10"},
-                {name: "Жіночі теплі шкарпетки", price: 249, img: "https://picsum.photos/300/300?random=11"}
+                {name: "Комплект чоловічих носків (3 пари)", price: 299},
+                {name: "Жіночі теплі шкарпетки", price: 249}
             ],
             underwear: [
-                {name: "Жіночі трусики (сліпи)", price: 449, img: "https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki1.jpg"},
-                {name: "Жіночі трусики (висока посадка)", price: 479, img: "https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/main/trusiki2.jpg"}
+                {name: "Жіночі трусики (сліпи)", price: 449},
+                {name: "Жіночі трусики (висока посадка)", price: 479}
             ]
         };
 
@@ -103,7 +100,6 @@
             products[category].forEach(product => {
                 container.innerHTML += `
                     <div class="product">
-                        <img src="\( {product.img}" alt=" \){product.name}">
                         <div class="info">
                             <h3>${product.name}</h3>
                             <p><strong>${product.price} грн</strong></p>
@@ -135,13 +131,63 @@
         }
 
         function clearCart() {
-            if (confirm("Очистити кошик і почати заново?")) {
+            if (confirm("Очистити кошик?")) {
                 cart = [];
                 updateCart();
             }
         }
 
-        // Ініціалізація
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            
+            let itemsHtml = '<strong>Ваше замовлення:</strong><br>';
+            let total = 0;
+            cart.forEach(item => {
+                itemsHtml += `• ${item.name} — ${item.price} грн<br>`;
+                total += item.price;
+            });
+            
+            document.getElementById('modal-cart-items').innerHTML = itemsHtml;
+            document.getElementById('modal-total').textContent = total;
+            document.getElementById('orderModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function sendOrder(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customer-name').value || "Не вказано";
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value || "Не вказано";
+            
+            let body = `Нове замовлення з сайту!\n\n`;
+            body += `Покупець: ${name}\n`;
+            body += `Телефон: ${phone}\n`;
+            body += `Адреса: ${address}\n\n`;
+            body += `Товари:\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                body += `• ${item.name} — ${item.price} грн\n`;
+                total += item.price;
+            });
+            
+            body += `\nЗагальна сума: ${total} грн\nДата: ${new Date().toLocaleString('uk-UA')}`;
+
+            window.location.href = `mailto:dakalgf1@gmail.com?subject=Нове замовлення Shkarpetky & Труси&body=${encodeURIComponent(body)}`;
+
+            setTimeout(() => {
+                cart = [];
+                updateCart();
+                closeModal();
+                alert("Замовлення відправлено на dakalgf1@gmail.com");
+            }, 800);
+        }
+
+        // Запуск
         showCategory('socks');
     </script>
 </body>
