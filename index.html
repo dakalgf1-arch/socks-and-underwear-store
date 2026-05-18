@@ -1,4 +1,4 @@
-            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +12,9 @@
         .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         .product img { width: 100%; height: 300px; object-fit: cover; }
         .info { padding: 15px; text-align: center; }
-        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; }
-        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); min-width: 280px; z-index: 1000; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin: 5px; }
+        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); min-width: 300px; z-index: 1000; }
+        .clear-btn { background: #e74c3c; }
     </style>
 </head>
 <body>
@@ -52,7 +53,9 @@
         <h3>🛒 Кошик (<span id="count">0</span>)</h3>
         <div id="cart-items"></div>
         <p><strong>Сума: <span id="total">0</span> грн</strong></p>
-        <button onclick="showOrderForm()" style="background:#27ae60; width:100%; padding:12px;">Оформити замовлення</button>
+        
+        <button onclick="showOrderForm()" style="background:#27ae60; width:100%;">Оформити замовлення</button>
+        <button onclick="clearCart()" class="clear-btn" style="width:100%;">🗑 Анулювати кошик (почати заново)</button>
     </div>
 
     <!-- Форма замовлення -->
@@ -70,9 +73,9 @@
                 <input type="tel" id="customer-phone" value="+380995461915" required style="width:100%; padding:10px; margin:8px 0;"><br>
                 
                 <label>Адреса доставки:</label><br>
-                <input type="text" id="customer-address" placeholder="Місто, відділення Нової Пошти або адреса" required style="width:100%; padding:10px; margin:8px 0;"><br>
+                <input type="text" id="customer-address" placeholder="Місто, відділення Нової Пошти" required style="width:100%; padding:10px; margin:8px 0;"><br>
                 
-                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; font-size:17px;">Надіслати замовлення на пошту</button>
+                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px;">Надіслати на dakalgf1@gmail.com</button>
             </form>
             <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:10px;">Скасувати</button>
         </div>
@@ -94,15 +97,23 @@
                 total += item.price;
                 html += `<p>${item.name} — ${item.price} грн</p>`;
             });
-            document.getElementById('cart-items').innerHTML = html;
+            document.getElementById('cart-items').innerHTML = html || '<p style="color:#999;">Кошик порожній</p>';
             document.getElementById('count').textContent = cart.length;
             document.getElementById('total').textContent = total;
+        }
+
+        function clearCart() {
+            if (confirm("Очистити весь кошик і почати заново?")) {
+                cart = [];
+                updateCart();
+                alert("Кошик очищено ✅");
+            }
         }
 
         function showOrderForm() {
             if (cart.length === 0) return alert("Кошик порожній!");
             
-            let itemsHtml = '<strong>Замовлення:</strong><br>';
+            let itemsHtml = '<strong>Ваше замовлення:</strong><br>';
             let total = 0;
             cart.forEach(item => {
                 itemsHtml += `• ${item.name} — ${item.price} грн<br>`;
@@ -125,7 +136,7 @@
             const phone = document.getElementById('customer-phone').value;
             const address = document.getElementById('customer-address').value;
             
-            let body = `Нове замовлення з сайту!\n\n`;
+            let body = `Нове замовлення!\n\n`;
             body += `Покупець: ${name}\n`;
             body += `Телефон: ${phone}\n`;
             body += `Адреса: ${address}\n\n`;
@@ -137,10 +148,9 @@
                 total += item.price;
             });
             
-            body += `\nЗагальна сума: ${total} грн\n`;
-            body += `Дата: ${new Date().toLocaleString('uk-UA')}`;
+            body += `\nЗагальна сума: ${total} грн`;
 
-            const mailto = `mailto:dakalgf1@gmail.com?subject=Нове замовлення Shkarpetky & Труси&body=${encodeURIComponent(body)}`;
+            const mailto = `mailto:dakalgf1@gmail.com?subject=Нове замовлення з сайту&body=${encodeURIComponent(body)}`;
             window.location.href = mailto;
 
             setTimeout(() => {
@@ -148,7 +158,7 @@
                 updateCart();
                 closeModal();
                 alert("Замовлення відправлено на dakalgf1@gmail.com");
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
