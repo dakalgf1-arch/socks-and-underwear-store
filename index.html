@@ -10,7 +10,7 @@
         .tabs { display: flex; justify-content: center; background: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .tab { padding: 15px 40px; margin: 0 10px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
         .tab.active { background: #ff4757; color: white; }
-        .product { background: white; border-radius: 15px; padding: 15px; margin: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
+        .product { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
         button { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; }
     </style>
 </head>
@@ -37,18 +37,20 @@
             document.getElementById('category-title').textContent = cat === 'socks' ? '🧦 Шкарпетки' : '👙 Труси';
 
             const container = document.getElementById('products');
-            container.innerHTML = '';
-
-            if (cat === 'socks') {
-                container.innerHTML = `
-                    <div class="product">
-                        <img src="socks1.jpg" style="width:100%; max-height:280px; object-fit:contain;" alt="Носки">
-                        <h3>Шкарпетки чоловічі спортивні</h3>
-                        <p>Туреччина • Без шва • 41-44 • Чорний</p>
-                        <p><strong>55 грн</strong></p>
-                        <button onclick="alert('✅ Додано в кошик!')">Купити</button>
-                    </div>`;
-            }
+            container.innerHTML = cat === 'socks' ? `
+                <div class="product">
+                    <img src="socks1.jpg" style="width:100%; max-height:280px; object-fit:contain;" alt="Носки">
+                    <h3>Шкарпетки чоловічі спортивні</h3>
+                    <p>Туреччина • Без шва • 41-44 • Чорний</p>
+                    <p><strong>55 грн</strong></p>
+                    <button onclick="alert('✅ Додано в кошик!')">Купити</button>
+                </div>` : `
+                <div class="product">
+                    <img src="trusiki1.jpg" style="width:100%; max-height:280px; object-fit:contain;" alt="Трусики">
+                    <h3>Жіночі трусики</h3>
+                    <p><strong>449 грн</strong></p>
+                    <button onclick="alert('✅ Додано в кошик!')">Купити</button>
+                </div>`;
         }
 
         showCategory('socks');
