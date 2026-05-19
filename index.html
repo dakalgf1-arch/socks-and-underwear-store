@@ -13,7 +13,7 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .product { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .product img { width: 100%; height: 300px; object-fit: cover; }
+        .product img { width: 100%; height: 320px; object-fit: cover; }
         .info { padding: 15px; text-align: center; }
         button { background: #ff4757; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; }
     </style>
@@ -34,34 +34,88 @@
         <div class="products" id="products"></div>
     </div>
 
+    <!-- Кошик -->
+    <div class="cart" id="cart" style="display:none; position:fixed; top:20px; right:20px; background:white; padding:15px; border-radius:12px; box-shadow:0 5px 25px rgba(0,0,0,0.2); min-width:300px; z-index:1000;">
+        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
+        <div id="cart-items"></div>
+        <p><strong>Сума: <span id="total">0</span> грн</strong></p>
+        <button onclick="showOrderForm()" style="background:#27ae60; width:100%; margin:8px 0;">Оформити замовлення</button>
+        <button onclick="clearCart()" style="background:#e74c3c; width:100%;">🗑 Анулювати кошик</button>
+    </div>
+
     <script>
+        let cart = [];
+
+        const products = {
+            socks: [
+                {
+                    name: "Шкарпетки чоловічі спортивні без шва",
+                    price: 55,
+                    description: "Туреччина • Adidas • 41-44 • Чорний"
+                }
+            ],
+            underwear: [
+                {name: "Жіночі трусики (сліпи)", price: 449},
+                {name: "Жіночі трусики (висока посадка)", price: 479}
+            ]
+        };
+
         function showCategory(cat) {
-            const products = document.getElementById('products');
-            const title = document.getElementById('category-title');
-            if (cat === 'socks') {
-                title.textContent = '🧦 Шкарпетки';
-                products.innerHTML = `
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('category-title').textContent = cat === 'socks' ? '🧦 Шкарпетки' : '👙 Труси';
+
+            const container = document.getElementById('products');
+            container.innerHTML = '';
+
+            products[cat].forEach(p => {
+                container.innerHTML += `
                     <div class="product">
-                        <img src="socks1.jpg" alt="Носки">
                         <div class="info">
-                            <h3>Комплект носків (3 пари)</h3>
-                            <p><strong>299 грн</strong></p>
-                            <button onclick="alert('Додано в кошик!')">Купити</button>
+                            <h3>${p.name}</h3>
+                            <p><strong>${p.price} грн</strong></p>
+                            \( {p.description ? `<p style="font-size:14px; color:#555;"> \){p.description}</p>` : ''}
+                            <button onclick="addToCart('${p.name}', ${p.price})">Купити</button>
                         </div>
-                    </div>`;
-            } else {
-                title.textContent = '👙 Труси';
-                products.innerHTML = `
-                    <div class="product">
-                        <img src="trusiki1.jpg" alt="Трусики">
-                        <div class="info">
-                            <h3>Жіночі трусики</h3>
-                            <p><strong>449 грн</strong></p>
-                            <button onclick="alert('Додано в кошик!')">Купити</button>
-                        </div>
-                    </div>`;
+                    </div>
+                `;
+            });
+        }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            alert(name + " — додано в кошик ✅");
+        }
+
+        function updateCart() {
+            let html = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                html += `<p>${item.name} — ${item.price} грн</p>`;
+            });
+            document.getElementById('cart-items').innerHTML = html || '<p style="color:#999;">Кошик порожній</p>';
+            document.getElementById('count').textContent = cart.length;
+            document.getElementById('total').textContent = total;
+            document.getElementById('cart').style.display = cart.length > 0 ? 'block' : 'none';
+        }
+
+        function clearCart() {
+            if (confirm("Очистити кошик?")) {
+                cart = [];
+                updateCart();
             }
         }
+
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            alert("Функція оформлення замовлення працює. Натисни кнопку ще раз якщо потрібно.");
+            // Тут можна додати форму пізніше
+        }
+
+        // Запуск
         showCategory('socks');
     </script>
 </body>
