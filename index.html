@@ -5,86 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
-        header { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); color: white; padding: 30px; text-align: center; }
-        
-        .tabs { display: flex; justify-content: center; background: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); gap: 10px; }
-        .tab { padding: 15px 40px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; border: none; background: #f1f1f1; }
-        .tab.active { background: #ff4757; color: white; }
-
-        .products { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-        .product { background: white; border-radius: 15px; padding: 20px; width: 320px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
-        .product img { width: 100%; max-height: 280px; object-fit: contain; border-radius: 10px; }
-        .buy-btn { background: #ff4757; color: white; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; padding: 20px; }
+        h1 { text-align: center; color: #ff4757; }
+        .product { background: white; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        button { background: #ff4757; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 17px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🧦 Шкарпетки & Труси</h1>
-        <p>Якісний товар за хорошими цінами</p>
-    </header>
-
-    <div class="tabs">
-        <button class="tab active" data-category="socks">🧦 Шкарпетки</button>
-        <button class="tab" data-category="underwear">👙 Труси</button>
+    <h1>🧦 Шкарпетки & Труси</h1>
+    
+    <div class="product">
+        <h3>Шкарпетки чоловічі спортивні</h3>
+        <p>Туреччина • 41-44 • Чорний</p>
+        <p><strong>55 грн</strong></p>
+        <button onclick="alert('✅ Додано в кошик!')">Купити</button>
     </div>
-
-    <div class="products" id="products"></div>
-
-    <script>
-        const catalog = {
-            socks: [
-                {
-                    img: "socks1.jpg",
-                    name: "Шкарпетки чоловічі спортивні",
-                    desc: "Туреччина • Без шва • Adidas стиль • 41-44 • Чорний",
-                    price: 55
-                }
-            ],
-            underwear: [
-                {
-                    img: "trusiki1.jpg",
-                    name: "Жіночі трусики (сліпи)",
-                    desc: "Висока посадка • Комфортна тканина",
-                    price: 449
-                }
-            ]
-        };
-
-        function renderProducts(category) {
-            const container = document.getElementById('products');
-            container.innerHTML = '';
-
-            catalog[category].forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'product';
-                div.innerHTML = `
-                    <img src="\( {item.img}" alt=" \){item.name}">
-                    <h3>${item.name}</h3>
-                    <p>${item.desc}</p>
-                    <p><strong>${item.price} грн</strong></p>
-                    <button class="buy-btn">Купити</button>
-                `;
-                
-                div.querySelector('.buy-btn').addEventListener('click', () => {
-                    alert(`✅ ${item.name} додано в кошик!`);
-                });
-                
-                container.appendChild(div);
-            });
-        }
-
-        // Обробка вкладок
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderProducts(tab.dataset.category);
-            });
-        });
-
-        // Початкове завантаження
-        renderProducts('socks');
-    </script>
 </body>
 </html>
