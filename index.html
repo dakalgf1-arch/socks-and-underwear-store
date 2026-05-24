@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; padding: 20px; text-align: center; }
-        h1 { color: #ff4757; }
-        .product { background: white; max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        button { background: #ff4757; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 17px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; padding: 20px; }
+        h1 { text-align: center; color: #ff4757; }
+        .product { background: white; max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; margin: 5px; }
+        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); min-width: 280px; z-index: 1000; display: none; }
     </style>
 </head>
 <body>
@@ -18,7 +19,45 @@
         <h3>Шкарпетки чоловічі спортивні</h3>
         <p>Туреччина • Без шва • 41-44 • Чорний</p>
         <p><strong>55 грн</strong></p>
-        <button onclick="alert('✅ Додано в кошик!')">Купити</button>
+        <button onclick="addToCart('Шкарпетки чоловічі спортивні', 55)">Купити</button>
     </div>
+
+    <!-- Кошик -->
+    <div class="cart" id="cart">
+        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
+        <div id="cart-items"></div>
+        <p><strong>Сума: <span id="total">0</span> грн</strong></p>
+        <button onclick="clearCart()" style="background:#e74c3c;">Очистити кошик</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCart();
+            alert(name + " додано в кошик ✅");
+        }
+
+        function updateCart() {
+            let items = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+                items += `<p>${item.name} — ${item.price} грн</p>`;
+            });
+            document.getElementById('cart-items').innerHTML = items || '<p>Кошик порожній</p>';
+            document.getElementById('count').textContent = cart.length;
+            document.getElementById('total').textContent = total;
+            document.getElementById('cart').style.display = 'block';
+        }
+
+        function clearCart() {
+            if (confirm("Очистити кошик?")) {
+                cart = [];
+                updateCart();
+            }
+        }
+    </script>
 </body>
 </html>
