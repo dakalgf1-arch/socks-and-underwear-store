@@ -5,33 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; padding: 20px; }
-        h1 { text-align: center; color: #ff4757; }
-        .product { background: white; max-width: 400px; margin: 20px auto; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
-        button { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; margin: 5px; }
-        .cart { position: fixed; top: 20px; right: 20px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); min-width: 280px; z-index: 1000; display: none; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
+        header { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); color: white; padding: 25px; text-align: center; }
+        .tabs { display: flex; justify-content: center; background: white; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tab { padding: 12px 35px; margin: 0 8px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .tab.active { background: #ff4757; color: white; }
+
+        .product { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
+        button { background: #ff4757; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; }
+
+        /* Згортаний кошик */
+        .cart { 
+            position: fixed; top: 20px; right: 20px; background: white; 
+            padding: 15px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); 
+            min-width: 300px; z-index: 1000; transition: all 0.3s;
+        }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer; }
+        .cart-toggle { font-size: 20px; }
     </style>
 </head>
 <body>
-    <h1>🧦 Шкарпетки & Труси</h1>
-    
-    <div class="product">
-        <h3>Шкарпетки чоловічі спортивні</h3>
-        <p>Туреччина • Без шва • 41-44 • Чорний</p>
-        <p><strong>55 грн</strong></p>
-        <button onclick="addToCart('Шкарпетки чоловічі спортивні', 55)">Купити</button>
+    <header>
+        <h1>🧦 Шкарпетки & Труси</h1>
+        <p>Комфортна білизна</p>
+    </header>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showCategory('socks')">🧦 Шкарпетки</div>
+        <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
     </div>
 
-    <!-- Кошик -->
+    <div style="text-align:center; padding:20px;">
+        <h2 id="category-title">Шкарпетки</h2>
+        <div id="products"></div>
+    </div>
+
+    <!-- Згортаний Кошик -->
     <div class="cart" id="cart">
-        <h3>🛒 Кошик (<span id="count">0</span>)</h3>
-        <div id="cart-items"></div>
-        <p><strong>Сума: <span id="total">0</span> грн</strong></p>
-        <button onclick="clearCart()" style="background:#e74c3c;">Очистити кошик</button>
+        <div class="cart-header" onclick="toggleCart()">
+            <h3>🛒 Кошик (<span id="count">0</span>)</h3>
+            <span class="cart-toggle" id="toggle-icon">▼</span>
+        </div>
+        <div id="cart-content">
+            <div id="cart-items"></div>
+            <p><strong>Сума: <span id="total">0</span> грн</strong></p>
+            <button onclick="showOrderForm()" style="background:#27ae60; width:100%; margin:8px 0;">Оформити замовлення</button>
+            <button onclick="clearCart()" style="background:#e74c3c; width:100%;">Очистити кошик</button>
+        </div>
     </div>
 
     <script>
         let cart = [];
+        let isCartOpen = true;
+
+        const catalog = {
+            socks: [{name: "Шкарпетки чоловічі спортивні", price: 55}],
+            underwear: [
+                {name: "Жіночі трусики (сліпи)", price: 449},
+                {name: "Жіночі трусики (висока посадка)", price: 479}
+            ]
+        };
+
+        function showCategory(cat) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById('category-title').textContent = cat === 'socks' ? '🧦 Шкарпетки' : '👙 Труси';
+
+            const container = document.getElementById('products');
+            container.innerHTML = '';
+
+            catalog[cat].forEach(item => {
+                container.innerHTML += `
+                    <div class="product">
+                        <h3>${item.name}</h3>
+                        <p><strong>${item.price} грн</strong></p>
+                        <button onclick="addToCart('${item.name}', ${item.price})">Купити</button>
+                    </div>`;
+            });
+        }
 
         function addToCart(name, price) {
             cart.push({name, price});
@@ -40,16 +91,21 @@
         }
 
         function updateCart() {
-            let items = '';
+            let html = '';
             let total = 0;
             cart.forEach(item => {
                 total += item.price;
-                items += `<p>${item.name} — ${item.price} грн</p>`;
+                html += `<p>${item.name} — ${item.price} грн</p>`;
             });
-            document.getElementById('cart-items').innerHTML = items || '<p>Кошик порожній</p>';
+            document.getElementById('cart-items').innerHTML = html || '<p style="color:#999;">Кошик порожній</p>';
             document.getElementById('count').textContent = cart.length;
             document.getElementById('total').textContent = total;
-            document.getElementById('cart').style.display = 'block';
+        }
+
+        function toggleCart() {
+            isCartOpen = !isCartOpen;
+            document.getElementById('cart-content').style.display = isCartOpen ? 'block' : 'none';
+            document.getElementById('toggle-icon').textContent = isCartOpen ? '▼' : '▶';
         }
 
         function clearCart() {
@@ -58,6 +114,14 @@
                 updateCart();
             }
         }
+
+        function showOrderForm() {
+            if (cart.length === 0) return alert("Кошик порожній!");
+            alert("✅ Замовлення сформовано! (тут можна додати форму пізніше)");
+        }
+
+        // Початок
+        showCategory('socks');
     </script>
 </body>
 </html>
