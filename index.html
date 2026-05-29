@@ -11,8 +11,10 @@
         .tab { padding: 12px 35px; margin: 0 8px; border-radius: 50px; cursor: pointer; font-weight: bold; }
         .tab.active { background: #ff4757; color: white; }
 
-        .product { background: white; border-radius: 15px; padding: 20px; margin: 15px auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
-        button { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .products { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .product { background: white; border-radius: 16px; padding: 15px; width: 320px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
+        .product img { width: 100%; height: 240px; object-fit: contain; border-radius: 12px; }
+        button { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; margin: 5px; }
 
         .cart { 
             position: fixed; bottom: 20px; right: 20px; background: white; 
@@ -27,6 +29,7 @@
 <body>
     <header>
         <h1>🧦 Шкарпетки & Труси</h1>
+        <p>Якісна білизна</p>
     </header>
 
     <div class="tabs">
@@ -34,7 +37,7 @@
         <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
     </div>
 
-    <div style="text-align:center; padding:20px;" id="products"></div>
+    <div class="products" id="products"></div>
 
     <!-- Кошик -->
     <div class="cart" id="cart">
@@ -42,7 +45,7 @@
             <h3>🛒 Кошик (<span id="count">0</span>)</h3>
             <span id="toggle-icon">▼</span>
         </div>
-        <div id="cart-content" style="padding:15px; display:block;">
+        <div id="cart-content" style="padding:15px;">
             <div id="cart-items"></div>
             <p><strong>Разом: <span id="total">0</span> грн</strong></p>
             <button onclick="showOrderForm()" style="background:#27ae60; color:white; width:100%; padding:15px;">Оформити замовлення</button>
@@ -66,7 +69,7 @@
                 <label>Адреса доставки:</label><br>
                 <input type="text" id="address" placeholder="Місто, відділення Нової Пошти" required style="width:100%; padding:10px; margin:8px 0;"><br>
                 
-                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; margin-top:10px;">Надіслати замовлення на пошту</button>
+                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; margin-top:10px;">Надіслати на dakalgf1@gmail.com</button>
             </form>
             <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:8px;">Скасувати</button>
         </div>
@@ -76,23 +79,33 @@
         let cart = [];
         let isOpen = true;
 
+        const catalog = {
+            socks: [
+                {name: "Шкарпетки чоловічі спортивні", price: 55, img: "socks1.jpg"},
+                {name: "Шкарпетки чоловічі спортивні (2)", price: 55, img: "socks2.jpg"}
+            ],
+            underwear: [
+                {name: "Жіночі трусики (сліпи)", price: 449, img: "trusiki1.jpg"},
+                {name: "Жіночі трусики (висока посадка)", price: 479, img: "trusiki2.jpg"}
+            ]
+        };
+
         function showCategory(cat) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
             const container = document.getElementById('products');
-            container.innerHTML = cat === 'socks' ? `
-                <div class="product">
-                    <h3>Шкарпетки чоловічі спортивні</h3>
-                    <p>Туреччина • 41-44 • Чорний</p>
-                    <p><strong>55 грн</strong></p>
-                    <button onclick="addToCart('Шкарпетки чоловічі спортивні', 55)">Купити</button>
-                </div>` : `
-                <div class="product">
-                    <h3>Жіночі трусики</h3>
-                    <p><strong>449 грн</strong></p>
-                    <button onclick="addToCart('Жіночі трусики', 449)">Купити</button>
-                </div>`;
+            container.innerHTML = '';
+
+            catalog[cat].forEach(item => {
+                container.innerHTML += `
+                    <div class="product">
+                        <img src="\( {item.img}" alt=" \){item.name}">
+                        <h3>${item.name}</h3>
+                        <p><strong>${item.price} грн</strong></p>
+                        <button onclick="addToCart('${item.name}', ${item.price})">Купити</button>
+                    </div>`;
+            });
         }
 
         function addToCart(name, price) {
@@ -129,7 +142,7 @@
                 total += item.price;
             });
             
-            document.getElementById('modal-items').innerHTML = `<strong>Замовлення:</strong><br>${itemsHtml}`;
+            document.getElementById('modal-items').innerHTML = `<strong>Ваше замовлення:</strong><br>${itemsHtml}`;
             document.getElementById('modal-total').textContent = total;
             document.getElementById('orderModal').style.display = 'block';
         }
@@ -140,17 +153,11 @@
 
         function sendOrder(e) {
             e.preventDefault();
-            
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
             
-            let body = `Нове замовлення!\n\n`;
-            body += `Покупець: ${name}\n`;
-            body += `Телефон: ${phone}\n`;
-            body += `Адреса: ${address}\n\n`;
-            body += `Товари:\n`;
-            
+            let body = `Нове замовлення!\n\nПокупець: ${name}\nТелефон: ${phone}\nАдреса: ${address}\n\nТовари:\n`;
             let total = 0;
             cart.forEach(item => {
                 body += `• ${item.name} — ${item.price} грн\n`;
