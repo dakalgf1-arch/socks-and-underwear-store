@@ -5,36 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shkarpetky & Труси</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f8f9fa; }
+        body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
         header { background: linear-gradient(135deg, #ff6b6b, #4ecdc4); color: white; padding: 25px; text-align: center; }
-        .tabs { display: flex; justify-content: center; background: white; padding: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .tab { padding: 12px 35px; margin: 0 8px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .tabs { display: flex; justify-content: center; background: white; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tab { padding: 12px 35px; margin: 0 8px; border-radius: 50px; cursor: pointer; font-weight: bold; }
         .tab.active { background: #ff4757; color: white; }
 
-        .products { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
-        .product { background: white; border-radius: 16px; padding: 15px; width: 320px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
-        .product img { width: 100%; height: 220px; object-fit: contain; border-radius: 12px; }
+        .product { background: white; border-radius: 15px; padding: 20px; margin: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
         button { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; }
 
-        /* Сучасний кошик */
         .cart { 
             position: fixed; bottom: 20px; right: 20px; background: white; 
-            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-            width: 340px; max-height: 80vh; overflow: hidden; z-index: 1000; transition: all 0.4s;
+            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); 
+            width: 340px; z-index: 1000; overflow: hidden;
         }
-        .cart-header { 
-            background: #ff4757; color: white; padding: 15px; 
-            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-        }
-        .cart-content { padding: 15px; max-height: 55vh; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .total { font-size: 18px; font-weight: bold; text-align: right; margin: 15px 0; }
+        .cart-header { background: #ff4757; color: white; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
     <header>
         <h1>🧦 Шкарпетки & Труси</h1>
-        <p>Якісна білизна за доступними цінами</p>
     </header>
 
     <div class="tabs">
@@ -42,7 +32,7 @@
         <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
     </div>
 
-    <div class="products" id="products"></div>
+    <div style="text-align:center; padding:20px;" id="products"></div>
 
     <!-- Кошик -->
     <div class="cart" id="cart">
@@ -50,11 +40,11 @@
             <h3>🛒 Кошик (<span id="count">0</span>)</h3>
             <span id="toggle-icon">▼</span>
         </div>
-        <div class="cart-content" id="cart-content">
+        <div id="cart-content" style="padding:15px;">
             <div id="cart-items"></div>
-            <div class="total">Разом: <span id="total">0</span> грн</div>
-            <button onclick="showOrderForm()" style="background:#27ae60; width:100%; color:white;">Оформити замовлення</button>
-            <button onclick="clearCart()" style="background:#e74c3c; width:100%; color:white; margin-top:8px;">Очистити кошик</button>
+            <p><strong>Разом: <span id="total">0</span> грн</strong></p>
+            <button onclick="showOrderForm()" style="background:#27ae60; color:white; width:100%; padding:15px;">Оформити замовлення</button>
+            <button onclick="clearCart()" style="background:#e74c3c; color:white; width:100%; margin-top:8px;">Очистити кошик</button>
         </div>
     </div>
 
@@ -62,51 +52,39 @@
         let cart = [];
         let isOpen = true;
 
-        const catalog = {
-            socks: [
-                {name: "Шкарпетки чоловічі спортивні", price: 55, img: "socks1.jpg"}
-            ],
-            underwear: [
-                {name: "Жіночі трусики (сліпи)", price: 449, img: "trusiki1.jpg"},
-                {name: "Жіночі трусики (висока посадка)", price: 479, img: "trusiki2.jpg"}
-            ]
-        };
-
         function showCategory(cat) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
             const container = document.getElementById('products');
-            container.innerHTML = '';
-
-            catalog[cat].forEach(item => {
-                container.innerHTML += `
-                    <div class="product">
-                        <img src="\( {item.img}" alt=" \){item.name}">
-                        <h3>${item.name}</h3>
-                        <p><strong>${item.price} грн</strong></p>
-                        <button onclick="addToCart('${item.name}', ${item.price})">Купити</button>
-                    </div>`;
-            });
+            container.innerHTML = cat === 'socks' ? `
+                <div class="product">
+                    <h3>Шкарпетки чоловічі спортивні</h3>
+                    <p>Туреччина • 41-44 • Чорний</p>
+                    <p><strong>55 грн</strong></p>
+                    <button onclick="addToCart('Шкарпетки чоловічі спортивні', 55)">Купити</button>
+                </div>` : `
+                <div class="product">
+                    <h3>Жіночі трусики</h3>
+                    <p><strong>449 грн</strong></p>
+                    <button onclick="addToCart('Жіночі трусики', 449)">Купити</button>
+                </div>`;
         }
 
         function addToCart(name, price) {
             cart.push({name, price});
             updateCart();
-            alert(`${name} додано в кошик ✅`);
+            alert(name + " додано в кошик ✅");
         }
 
         function updateCart() {
             let html = '';
             let total = 0;
-            cart.forEach((item, index) => {
+            cart.forEach(item => {
                 total += item.price;
-                html += `<div class="cart-item">
-                    <span>${item.name}</span>
-                    <span>${item.price} грн</span>
-                </div>`;
+                html += `<p>${item.name} — ${item.price} грн</p>`;
             });
-            document.getElementById('cart-items').innerHTML = html || '<p style="text-align:center; color:#999;">Кошик порожній</p>';
+            document.getElementById('cart-items').innerHTML = html || '<p>Кошик порожній</p>';
             document.getElementById('count').textContent = cart.length;
             document.getElementById('total').textContent = total;
         }
@@ -118,19 +96,21 @@
         }
 
         function clearCart() {
-            if (confirm("Очистити весь кошик?")) {
+            if (confirm("Очистити кошик?")) {
                 cart = [];
                 updateCart();
             }
         }
 
         function showOrderForm() {
-            if (cart.length === 0) return alert("Кошик порожній!");
+            if (cart.length === 0) {
+                alert("Кошик порожній!");
+                return;
+            }
             alert("✅ Замовлення сформовано!\n\nМи скоро зв'яжемося з вами.");
-            // Тут можна додати форму пізніше
+            // Тут можна пізніше додати форму
         }
 
-        // Ініціалізація
         showCategory('socks');
     </script>
 </body>
