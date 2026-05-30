@@ -23,8 +23,6 @@
             width: 340px; z-index: 1000; overflow: hidden;
         }
         .cart-header { background: #ff4757; color: white; padding: 15px; cursor: pointer; display: flex; justify-content: space-between; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; }
-        .modal-content { background: white; margin: 5% auto; padding: 25px; width: 90%; max-width: 500px; border-radius: 15px; }
     </style>
 </head>
 <body>
@@ -50,29 +48,6 @@
             <div id="cart-items"></div>
             <p><strong>Разом: <span id="total">0</span> грн</strong></p>
             <button onclick="showOrderForm()" style="background:#27ae60; color:white; width:100%; padding:15px;">Оформити замовлення</button>
-        </div>
-    </div>
-
-    <!-- Форма замовлення -->
-    <div class="modal" id="orderModal">
-        <div class="modal-content">
-            <h2>Оформлення замовлення</h2>
-            <form onsubmit="sendOrder(event)">
-                <div id="modal-items"></div>
-                <p><strong>Загальна сума: <span id="modal-total">0</span> грн</strong></p>
-                
-                <label>Ім'я та Прізвище:</label><br>
-                <input type="text" id="name" required style="width:100%; padding:10px; margin:8px 0;"><br>
-                
-                <label>Телефон:</label><br>
-                <input type="tel" id="phone" value="+380995461915" required style="width:100%; padding:10px; margin:8px 0;"><br>
-                
-                <label>Адреса доставки:</label><br>
-                <input type="text" id="address" placeholder="Місто, відділення Нової Пошти" required style="width:100%; padding:10px; margin:8px 0;"><br>
-                
-                <button type="submit" style="background:#27ae60; color:white; width:100%; padding:15px; margin-top:10px;">Надіслати на dakalgf1@gmail.com</button>
-            </form>
-            <button onclick="closeModal()" style="background:#95a5a6; color:white; width:100%; padding:12px; margin-top:8px;">Скасувати</button>
         </div>
     </div>
 
@@ -135,29 +110,7 @@
 
         function showOrderForm() {
             if (cart.length === 0) return alert("Кошик порожній!");
-            
-            let itemsHtml = '';
-            let total = 0;
-            cart.forEach(item => {
-                itemsHtml += `• ${item.name} — ${item.price} грн<br>`;
-                total += item.price;
-            });
-            
-            document.getElementById('modal-items').innerHTML = `<strong>Ваше замовлення:</strong><br>${itemsHtml}`;
-            document.getElementById('modal-total').textContent = total;
-            document.getElementById('orderModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
-
-        function sendOrder(e) {
-            e.preventDefault();
-            alert("✅ Замовлення відправлено на dakalgf1@gmail.com");
-            cart = [];
-            updateCart();
-            closeModal();
+            alert("✅ Замовлення сформовано!\n\nМи скоро зв'яжемося з вами.");
         }
 
         // Запуск
