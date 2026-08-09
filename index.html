@@ -14,8 +14,10 @@
         .tab.active { background: #ff4757; color: white; }
         .products { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
         .product { background: white; border-radius: 16px; padding: 15px; width: 320px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center; }
+        .product.wide { width: 480px; max-width: 95vw; }
         .product img { width: 100%; height: 240px; object-fit: contain; border-radius: 12px; background: #f0f0f0; }
         .product h3 { margin: 12px 0 6px; font-size: 17px; line-height: 1.3; }
+        .product .desc { font-size: 13px; color: #555; text-align: left; line-height: 1.45; margin: 10px 0 14px; max-height: 120px; overflow-y: auto; padding: 0 4px; }
         .product .price { font-size: 20px; font-weight: bold; color: #ff4757; margin-bottom: 12px; }
         button { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
         .btn-buy { background: #ff4757; color: white; width: 100%; }
@@ -112,7 +114,8 @@
         let isOpen = true;
         const TELEGRAM_BOT_TOKEN = '8791143315:AAHIkx6LMQKn5E9ZIiXzUhms998M7WDXkiI';
         const TELEGRAM_CHAT_ID = '5393712604';
-        const DEHYDRATOR_IMG = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'320\' height=\'240\'%3E%3Crect fill=\'%23e8f4f8\' width=\'320\' height=\'240\'/%3E%3Ctext x=\'160\' y=\'120\' text-anchor=\'middle\' fill=\'%23333\' font-size=\'16\'%3ERainberg RB-2291%3C/text%3E%3C/svg%3E';
+        const DEHYDRATOR_IMG = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'320\' height=\'240\'%3E%3Crect fill=\'%23e8f4f8\' width=\'320\' height=\'240\'/%3E%3Ctext x=\'160\' y=\'115\' text-anchor=\'middle\' fill=\'%23333\' font-size=\'15\'%3ERainberg RB-2291%3C/text%3E%3Ctext x=\'160\' y=\'140\' text-anchor=\'middle\' fill=\'%23666\' font-size=\'12\'%3E1000W · 5 рівнів%3C/text%3E%3C/svg%3E';
+
         const catalog = {
             socks: [
                 { id: 's1', name: "Шкарпетки чоловічі спортивні", price: 55, img: "socks1.jpg" },
@@ -123,9 +126,16 @@
                 { id: 'u2', name: "Жіночі трусики (висока посадка)", price: 479, img: "trusiki2.jpg" }
             ],
             tech: [
-                { id: 't1', name: "Електрична сушарка для овочів та фруктів Rainberg RB-2291 (1000W)", price: 1500, img: DEHYDRATOR_IMG }
+                {
+                    id: 't1',
+                    name: "Електрична сушарка для овочів та фруктів Rainberg RB-2291 (1000W)",
+                    price: 1500,
+                    img: DEHYDRATOR_IMG,
+                    desc: "Заготовка продуктів на зиму з сушкою Rainberg RB-2291 не потребує багато часу і сил. Невелика ціна, висока якість і велика продуктивність роблять її ідеальною помічницею для сушіння фруктів, овочів, трав і ягід.\n\nНа зміну довгому й утомливому сушінню на сонці прийшла надійна сушка Rainberg RB-2291. Процес став швидшим, якіснішим і продуктивнішим.\n\nПросто завантажте нарізані продукти на 5 рівнів, увімкніть прилад і займайтеся іншими справами. Підходить для трав’яних зборів, прянощів, натуральних цукерок та корисних смаколиків."
+                }
             ]
         };
+
         function showCategory(cat) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => {
@@ -139,16 +149,21 @@
             container.innerHTML = '';
             catalog[cat].forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'product';
+                div.className = 'product' + (item.desc ? ' wide' : '');
+                const descHtml = item.desc
+                    ? `<div class="desc">${item.desc.replace(/\n/g, '<br>')}</div>`
+                    : '';
                 div.innerHTML = `
                     <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'">
                     <h3>${item.name}</h3>
+                    ${descHtml}
                     <div class="price">${item.price} грн</div>
                     <button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>
                 `;
                 container.appendChild(div);
             });
         }
+
         function addToCart(id) {
             let product = null;
             for (const cat of Object.values(catalog)) {
@@ -161,6 +176,7 @@
             else { cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 }); }
             updateCart();
         }
+
         function changeQty(id, delta) {
             const item = cart.find(i => i.id === id);
             if (!item) return;
@@ -168,10 +184,12 @@
             if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
             updateCart();
         }
+
         function removeFromCart(id) {
             cart = cart.filter(i => i.id !== id);
             updateCart();
         }
+
         function updateCart() {
             const container = document.getElementById('cart-items');
             const orderBtn = document.getElementById('order-btn');
@@ -192,11 +210,13 @@
             document.getElementById('count').textContent = count;
             document.getElementById('total').textContent = total;
         }
+
         function toggleCart() {
             isOpen = !isOpen;
             document.getElementById('cart-content').style.display = isOpen ? 'block' : 'none';
             document.getElementById('toggle-icon').textContent = isOpen ? '▼' : '▲';
         }
+
         function showOrderForm() {
             if (cart.length === 0) return;
             let summary = '<strong>Ваше замовлення:</strong><br>';
@@ -210,9 +230,11 @@
             document.getElementById('order-summary').innerHTML = summary;
             document.getElementById('order-modal').classList.add('show');
         }
+
         function closeOrderForm() {
             document.getElementById('order-modal').classList.remove('show');
         }
+
         async function submitOrder(e) {
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
@@ -248,6 +270,7 @@
                 submitBtn.textContent = 'Підтвердити замовлення';
             }
         }
+
         function finishOrder() { closeOrderForm(); location.reload(); }
         document.getElementById('order-modal').addEventListener('click', function(e) { if (e.target === this) closeOrderForm(); });
         showCategory('socks');
