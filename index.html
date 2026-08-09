@@ -64,9 +64,9 @@
         <p>Якісна білизна та техніка</p>
     </header>
     <div class="tabs">
-        <div class="tab active" onclick="showCategory('socks')">🧦 Шкарпетки</div>
+        <div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
+        <div class="tab" onclick="showCategory('socks')">🧦 Шкарпетки</div>
         <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
-        <div class="tab" onclick="showCategory('tech')">🔌 Техніка</div>
     </div>
     <div class="products" id="products"></div>
     <div class="cart" id="cart">
@@ -281,7 +281,7 @@
 
         function finishOrder() { closeOrderForm(); location.reload(); }
         document.getElementById('order-modal').addEventListener('click', function(e) { if (e.target === this) closeOrderForm(); });
-        showCategory('socks');
+        showCategory('tech');
     </script>
 </body>
 </html>
