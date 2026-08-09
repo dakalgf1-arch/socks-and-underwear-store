@@ -17,9 +17,10 @@
         .product.wide { width: 560px; max-width: 95vw; }
         .product img { width: 100%; height: 220px; object-fit: contain; border-radius: 12px; background: #f0f0f0; }
         .product h3 { margin: 12px 0 6px; font-size: 17px; line-height: 1.3; }
-        .product .desc { font-size: 13px; color: #444; text-align: left; line-height: 1.5; margin: 10px 0 8px; max-height: 160px; overflow-y: auto; padding: 8px 6px; background: #fafafa; border-radius: 8px; }
-        .product .specs { font-size: 12px; color: #333; text-align: left; line-height: 1.55; margin: 0 0 12px; padding: 10px; background: #f0f7ff; border-radius: 8px; border-left: 3px solid #4ecdc4; }
-        .product .specs strong { display: block; margin-bottom: 6px; color: #222; font-size: 13px; }
+        .product .desc { font-size: 13px; color: #444; text-align: left; line-height: 1.5; margin: 10px 0 8px; max-height: 140px; overflow-y: auto; padding: 8px 6px; background: #fafafa; border-radius: 8px; }
+        .product .specs { font-size: 12px; color: #333; text-align: left; line-height: 1.55; margin: 0 0 12px; padding: 10px; background: #f0f7ff; border-radius: 8px; border-left: 3px solid #4ecdc4; max-height: 220px; overflow-y: auto; }
+        .product .specs strong { display: block; margin: 8px 0 4px; color: #222; font-size: 13px; }
+        .product .specs strong:first-child { margin-top: 0; }
         .product .price { font-size: 20px; font-weight: bold; color: #ff4757; margin-bottom: 12px; }
         button { border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
         .btn-buy { background: #ff4757; color: white; width: 100%; }
@@ -134,7 +135,7 @@
                     price: 1500,
                     img: DEHYDRATOR_IMG,
                     desc: "Заготовка продуктов на зиму с сушкой для фруктов и овощей Rainberg RB-2291 не требует довольно значительного вложения времени и сил.\n\nНебольшая цена, высокое качество и большая производительность делает Rainberg RB-2291 идеальной помощницей в процессе сушки фруктов, овощей, трав и ягод.\n\nНа смену долгого, утомительного и требующего большого количества внимания солнцу, ветру и прочим природным методам обезвоживания продуктов пришла качественная и надежная сушка фруктов и овощей Rainberg RB-2291.\n\nТеперь процесс сушки продуктов стал более быстрым, качественным и продуктивным.\n\nУвеличить полезное пространство, уменьшив объемы, но сохранив качественные и вкусовые свойства продуктов, поможет сушка Rainberg RB-2291.\n\nБлагодаря этому чуду домашней техники процесс сушки не требует большого количества усилий, просто загрузите порезанные продукты на 5 уровней, включите прибор и спокойно можно заниматься другими делами.\n\nТравяные сборы и пряности, натуральные конфеты и разнообразные фантастически полезные и вкусные продукты можно приготовить с сушкой (дегидратор) Rainberg RB-2291.\n\nПосле добавления воды к сушеным продуктам они способны полностью восстанавливаться.\n\nГлавное не пересушить, после сушки продукты должны быть мягкими, но не влажными — для этого вы самостоятельно выставляете необходимое время сушки надёжным механическим управлением Rainberg RB-2291.\n\nОпустив в кипяток на несколько секунд ягоды с плотной кожицей перед сушкой, процесс пройдёт более быстро и качественно.",
-                    specs: "Характеристики:\n• Вага: 3 кг\n• Виробник: Rainberg\n• Потужність: 1000 Вт\n• Кількість піддонів: 5\n• Висота піддона: 2,5 см\n• Матеріал корпусу: пластик\n• Матеріал піддонів: харчовий пластик\n• Регулювання висоти піддона\n• Захист від перегріву\n• Індикатор увімкнення\n\nМожна сушити: пастила, овочі, фрукти, хліб, гриби, трави, зелень, риба, м'ясо, макаронні вироби, горіхи."
+                    specs: "<strong>Характеристики</strong>• Вага: 3 кг<br>• Виробник: Rainberg<br>• Потужність: 1000 Вт<br>• Кількість піддонів: 5<br>• Висота піддона: 2,5 см<br>• Матеріал корпусу: пластик<br>• Матеріал піддонів: харчовий пластик<br>• Регулювання висоти піддона<br>• Захист від перегріву<br>• Індикатор увімкнення<br><br>Можна сушити: пастила, овочі, фрукти, хліб, гриби, трави, зелень, риба, м'ясо, макаронні вироби, горіхи.<br><br><strong>Особливості</strong>• Безшумна робота<br>• Гумові ніжки<br>• Система сушіння: конвективна<br>• Температура сушіння: 35–70 °C<br>• Терморегулятор: є<br>• Тип керування: механічний<br><br><strong>Комплектація</strong>• Сушарка Rainberg RB-2291<br>• Прозора кришка<br>• П'ять знімних пластикових піддонів<br>• Інструкція<br>• Фірмова коробка"
                 }
             ]
         };
@@ -157,7 +158,7 @@
                     ? `<div class="desc">${item.desc.replace(/\n/g, '<br>')}</div>`
                     : '';
                 const specsHtml = item.specs
-                    ? `<div class="specs"><strong>Характеристики</strong>${item.specs.replace(/Характеристики:\n/, '').replace(/\n/g, '<br>')}</div>`
+                    ? `<div class="specs">${item.specs}</div>`
                     : '';
                 div.innerHTML = `
                     <img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'">
