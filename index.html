@@ -1,1 +1,120 @@
-SEE_FILE_INDEX_TOOLS_IMGS
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Комфорт Маркет — техніка, краса, косметика</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f8f9fa;padding-bottom:120px}header{background:linear-gradient(135deg,#ff6b6b,#4ecdc4);color:#fff;padding:25px;text-align:center}.tabs{display:flex;justify-content:center;flex-wrap:wrap;background:#fff;padding:12px;box-shadow:0 2px 5px rgba(0,0,0,.1);gap:6px}.tab{padding:12px 28px;border-radius:50px;cursor:pointer;font-weight:700;transition:.2s}.tab:hover{background:#ffe0e3}.tab.active{background:#ff4757;color:#fff}.products{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px}.product{background:#fff;border-radius:16px;padding:15px;width:320px;box-shadow:0 5px 20px rgba(0,0,0,.1);text-align:center}.product.wide{width:560px;max-width:95vw}.product img{width:100%;height:220px;object-fit:contain;border-radius:12px;background:#f0f0f0}.product h3{margin:12px 0 6px;font-size:17px;line-height:1.3}.product .desc{font-size:13px;color:#444;text-align:left;line-height:1.5;margin:10px 0 8px;max-height:140px;overflow-y:auto;padding:8px 6px;background:#fafafa;border-radius:8px}.product .specs{font-size:12px;color:#333;text-align:left;line-height:1.55;margin:0 0 12px;padding:10px;background:#f0f7ff;border-radius:8px;border-left:3px solid #4ecdc4;max-height:220px;overflow-y:auto}.product .specs strong{display:block;margin:8px 0 4px;color:#222;font-size:13px}.product .specs strong:first-child{margin-top:0}.product .price{font-size:20px;font-weight:700;color:#ff4757;margin-bottom:12px}button{border:none;padding:12px 25px;border-radius:8px;cursor:pointer;font-size:16px;transition:.2s}.btn-buy{background:#ff4757;color:#fff;width:100%}.btn-buy:hover{background:#e84118}.cart{position:fixed;bottom:20px;right:20px;background:#fff;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:360px;max-width:calc(100vw - 40px);z-index:1000;overflow:hidden}.cart-header{background:#ff4757;color:#fff;padding:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.cart-header h3{margin:0;font-size:18px}#cart-content{padding:15px;max-height:400px;overflow-y:auto}.cart-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #eee}.cart-item-info{flex:1}.cart-item-name{font-weight:500;font-size:14px}.cart-item-price{color:#666;font-size:13px}.cart-item-controls{display:flex;align-items:center;gap:8px}.qty-btn{width:28px;height:28px;border-radius:50%;background:#f0f0f0;font-weight:700;padding:0;font-size:16px}.qty-btn:hover{background:#ddd}.remove-btn{background:none;color:#e74c3c;font-size:18px;padding:0 6px}.cart-total{font-size:18px;margin:15px 0}.btn-order{background:#27ae60;color:#fff;width:100%;padding:15px;font-size:16px;font-weight:700}.btn-order:hover{background:#219a52}.btn-order:disabled{background:#95a5a6;cursor:not-allowed}.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:2000;justify-content:center;align-items:center}.modal-overlay.show{display:flex}.modal{background:#fff;border-radius:16px;padding:25px;width:90%;max-width:420px;max-height:90vh;overflow-y:auto}.modal h2{margin-top:0;color:#ff4757}.form-group{margin-bottom:15px}.form-group label{display:block;margin-bottom:5px;font-weight:500}.form-group input,.form-group textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px}.form-group textarea{resize:vertical;min-height:70px}.order-summary{background:#f8f9fa;padding:12px;border-radius:8px;margin-bottom:15px;font-size:14px}.modal-buttons{display:flex;gap:10px;margin-top:20px}.btn-cancel{background:#95a5a6;color:#fff;flex:1}.btn-submit{background:#27ae60;color:#fff;flex:2}.btn-submit:disabled{background:#95a5a6;cursor:wait}.success-message{text-align:center;padding:20px}.success-message h2{color:#27ae60}
+</style>
+</head>
+<body>
+<header><h1>Комфорт Маркет</h1><p>Техніка · Краса · Косметика · Інструмент</p></header>
+<div class="tabs">
+<div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
+<div class="tab" onclick="showCategory('beauty')">✨ Краса і здоров'я</div>
+<div class="tab" onclick="showCategory('cosmetics')">💄 Косметика</div>
+<div class="tab" onclick="showCategory('tools')">🔧 Авто і інструмент</div>
+</div>
+<div class="products" id="products"></div>
+<div class="cart" id="cart">
+<div class="cart-header" onclick="toggleCart()"><h3>🛒 Кошик (<span id="count">0</span>)</h3><span id="toggle-icon">▼</span></div>
+<div id="cart-content">
+<div id="cart-items"><p style="color:#999;text-align:center">Кошик порожній</p></div>
+<p class="cart-total"><strong>Разом: <span id="total">0</span> грн</strong></p>
+<button class="btn-order" id="order-btn" onclick="showOrderForm()" disabled>Оформити замовлення</button>
+</div></div>
+<div class="modal-overlay" id="order-modal">
+<div class="modal" id="modal-content">
+<h2>📦 Оформлення замовлення</h2>
+<div class="order-summary" id="order-summary"></div>
+<form id="order-form" onsubmit="submitOrder(event)">
+<div class="form-group"><label for="name">Ваше ім'я *</label><input type="text" id="name" required placeholder="Як до вас звертатися"></div>
+<div class="form-group"><label for="phone">Телефон *</label><input type="tel" id="phone" required placeholder="+380..." pattern="[+0-9\s\-]{10,}"></div>
+<div class="form-group"><label for="city">Місто *</label><input type="text" id="city" required placeholder="Київ"></div>
+<div class="form-group"><label for="address">Адреса доставки / Нова Пошта *</label><textarea id="address" required placeholder="Відділення НП №... або вулиця, будинок"></textarea></div>
+<div class="form-group"><label for="comment">Коментар</label><textarea id="comment" placeholder="Бажаний час доставки, примітки..."></textarea></div>
+<div class="modal-buttons"><button type="button" class="btn-cancel" onclick="closeOrderForm()">Скасувати</button><button type="submit" class="btn-submit" id="submit-btn">Підтвердити замовлення</button></div>
+</form></div></div>
+<script>
+let cart=[],isOpen=true;
+const TELEGRAM_BOT_TOKEN='8791143315:AAHIkx6LMQKn5E9ZIiXzUhms998M7WDXkiI';
+const TELEGRAM_CHAT_ID='5393712604';
+const DEHYDRATOR_IMG='https://i.imgur.com/ugoCrzG.jpeg';
+const catalog={
+beauty:[
+{id:'b1',name:"Вакуумний антицелюлітний масажер Cupping Massager",price:595,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/6774037387_vakuumnij-antitselyulitnij-masazher.webp"},
+{id:'b2',name:"Епілятор VGR V-733 USB 6 в 1",price:930,img:"https://phantom-drop.com.ua/wp-content/uploads/2024/09/5978882332_epilyator-vgr-v-733.png"},
+{id:'b3',name:"Праска для волосся VGR V-522 45 Вт",price:715,img:"https://phantom-drop.com.ua/wp-content/uploads/2024/09/6254732720_utyuzhok-dlya-vypryamleniya.webp"},
+{id:'b4',name:"Жіночий тример 4 в 1 LY-1102",price:480,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/01/7010295121_zhinochij-trimer-4.png"},
+{id:'b5',name:"Фен-стайлер KM-6911 синій 1000 Вт",price:1720,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490355059_fen-stajler-dlya-volossya.png"},
+{id:'b6',name:"Фен-стайлер KM-6910 чорний 1000 Вт",price:1720,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490348579_fen-stajler-dlya-volossya.png"},
+{id:'b7',name:"Плойка для локонів VGR V-583",price:1149,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490340331_plojka-dlya-lokoniv.png"},
+{id:'b8',name:"Епілятор VGR V-706 на 18 пінцетів",price:570,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427658136_zhinochij-kompaktnij-bezdrotovij.png"},
+{id:'b9',name:"Епілятор VGR V-705 з підсвічуванням",price:615,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427644603_zhinochij-bezdrotovij-akumulyatornij.png"},
+{id:'b10',name:"Епілятор 2в1 VGR V-758",price:615,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427634388_zhinochij-bezdrotovij-epilyator.png"},
+{id:'b11',name:"Епілятор VGR V-753 з LED-екраном",price:680,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427629181_akumulyatornij-epilyator-vgr.png"},
+{id:'b12',name:"Набір VGR V-752 5 в 1",price:949,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427587960_zhinochij-nabir-vgr.png"},
+{id:'b13',name:"Маска LED 7 в 1 для світлотерапії",price:595,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7381411135_maska-led-7.png"},
+{id:'b14',name:"Фрезер для манікюру LIna Mercedes 2000",price:525,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/03/5978817827_frezer-dlya-manikyura.jpg"},
+{id:'b15',name:"Машинка для манікюру 6 в 1",price:360,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/5978817961_mashinka-dlya-manikyura.jpg"},
+{id:'b16',name:"М'які бігуді Reclaire Cosmetics",price:325,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/08/5978848188_myaki-bigudi-reclaire.png"}
+],
+cosmetics:[
+{id:'c1',name:"Носочки зволожуючі BIOAQUA Vitamin E Manuka Honey",price:135,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269442032_nosochki-dlya-nig.png"},
+{id:'c2',name:"Крем для ніг Sadoer Collagen Anti-Aging 60г",price:160,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269316243_zhivilnij-krem-dlya.png"},
+{id:'c3',name:"Капсули для волосся Sadoer аргана/макадамія/олива",price:245,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269179108_kapsuli-dlya-likuvannya.png"},
+{id:'c4',name:"Капсули для волосся Sadoer аргана/жожоба",price:245,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269156023_kapsuli-dlya-rozgladzhennya.png"},
+{id:'c5',name:"Капсули для волосся Sadoer аргана/ліщина",price:245,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269076780_vidnovlyuyuchi-kapsuli-dlya.png"},
+{id:'c6',name:"Набір кремів для рук Images (м'ята, чорниця, сакура)",price:215,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269028378_nabir-kremiv-dlya.png"},
+{id:'c7',name:"Набір кремів для рук 5 в 1 Sadoer",price:215,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269003640_nabir-kremiv-dlya.png"},
+{id:'c8',name:"Набір кремів для рук Luofmiss квіткові",price:215,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268973476_nabir-kremiv-dlya.png"},
+{id:'c9',name:"Набір кремів для рук Luofmiss Котик",price:215,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268962337_nabir-kremiv-dlya.png"},
+{id:'c10',name:"Набір кремів для рук OneSpring 5 шт",price:215,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268829508_krem-dlya-ruk.png"},
+{id:'c11',name:"Ополіскувач Sadoer кава 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6908165668_opoliskuvach-dlya-rota.png"},
+{id:'c12',name:"Ополіскувач Sadoer персик 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904189299_opoliskuvach-dlya-rota.png"},
+{id:'c13',name:"Ополіскувач Sadoer зелений чай 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904186276_opoliskuvach-dlya-rota.png"},
+{id:'c14',name:"Ополіскувач Sadoer кавун 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904183589_opoliskuvach-dlya-rota.png"},
+{id:'c15',name:"Ополіскувач Sadoer виноград 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904178746_opoliskuvach-dlya-rota.png"},
+{id:'c16',name:"Ополіскувач Sadoer кокос 20 стіків",price:195,img:"https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904171569_opoliskuvach-dlya-rota.png"}
+],
+tools:[
+{id:'a1',name:"Сходи-стрем'янка 4.2м телескопічна алюмінієва",price:4010,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599883580_shodi-stremyanka-42m-2121.png"},
+{id:'a2',name:"Автомагнітола JSD-520 USB Bluetooth",price:540,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/5978822248_avtomagnitola-jsd-520-magnitola.jpg"},
+{id:'a3',name:"Мультиметр цифровий DT-832",price:310,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/5978816419_multimetr-tsifrovoj-digital.png"},
+{id:'a4',name:"Автохолодильник 7.5 л 12V",price:1075,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7363589335_portativnij-avtoholodilnik-75.png"},
+{id:'a5',name:"Домкрат електричний 12V 1500 кг",price:3015,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7522390820_domkrat-elektrichnij-avtomobilnij.png"},
+{id:'a6',name:"Інвертор 300W 12V→220V",price:3285,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/06/7514338358_invertor-zhivlennya-uin2.png"},
+{id:'a7',name:"Алмазний різак 2в1 для скла та плитки",price:375,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490322237_almaznij-rizak-2-v-1.png"},
+{id:'a8',name:"Аварійний комплект автомобіліста 6 в 1",price:545,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/02/7059243035_avarijnij-komplekt-dlya.png"},
+{id:'a9',name:"Рулетка 3в1 RL-40",price:1175,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406776147_lazernij-dalekomir-.png"},
+{id:'a10',name:"Лазерний далекомір RL-41 40м",price:905,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406774050_lazernij-dalekomir-rl-41.png"},
+{id:'a11',name:"Аромадифузор для авто XT016",price:540,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406772862_portativnij-akumulyatornij-aromadifuzor.png"},
+{id:'a12',name:"Акумуляторна повітродувка СВ-3991",price:865,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7374468093_akumulyatorna-povitroduvka-dlya.png"},
+{id:'a13',name:"Аромадифузор для авто XT015",price:680,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406771961_portativnij-akumulyatornij-aromadifuzor.png"},
+{id:'a14',name:"Аромадифузор для авто XT045",price:680,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406766506_portativnij-akumulyatornij-aromadifuzor.png"},
+{id:'a15',name:"Освіжувач повітря Вертоліт Vert02",price:445,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406650148_avtomobilnij-osvizhuvach-povitrya.png"},
+{id:'a16',name:"Шуруповерт CB-3996 64V (2 АКБ, кейс)",price:1050,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7374620542_akumulyatornij-shurupovert-cb-3996.png"}
+],
+tech:[
+{id:'t1',name:"Електрична сушарка для овочів та фруктів Rainberg RB-2291 (1000W) Food Dehydrator Multifunction",price:1500,img:DEHYDRATOR_IMG,desc:"Заготовка продуктов на зиму с сушкой Rainberg RB-2291. 5 рівнів, 1000Вт, температура 35–70°C.",specs:"<strong>Характеристики</strong>• Потужність: 1000 Вт<br>• 5 піддонів<br>• 35–70 °C"},
+{id:'t2',name:"Блендер Crownberg CB-6220",price:600,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/09/3542956322_blender-crownberg-cb-6220.jpg",desc:"Занурювальний блендер 300 Вт, нержавіюча сталь.",specs:"<strong>Особливості</strong>• 300 Вт<br>• Занурювальний"},
+{id:'t3',name:"Електроплита спіральна GRUNHELM GHP-5811",price:500,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4045553193_elektroplita-spiralna-grunhelm.png",desc:"Настільна спіральна плита 1000 Вт, конфорка 17 см.",specs:"<strong>Характеристики</strong>• 1000 Вт<br>• 1 конфорка 17 см"},
+{id:'t4',name:"Кавомашина Crownberg CB-1566 Espresso 1000 Вт з капучинатором",price:3000,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4016954260_kofemashina-poluavtomaticheskaya-crownberg.png",desc:"Напівавтомат 15 бар, капучино, резервуар 1,6 л.",specs:"<strong>Характеристики</strong>• 1000 Вт<br>• 15 бар<br>• 1,6 л"}
+]
+};
+function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&t.textContent.includes('інструмент')))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';catalog[cat].forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc||item.specs?' wide':'');const desc=item.desc?`<div class="desc">${item.desc.replace(/\n/g,'<br>')}</div>`:'';const specs=item.specs?`<div class="specs">${item.specs}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3>${item.name}</h3>${desc}${specs}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
+function addToCart(id){let p=null;for(const cat of Object.values(catalog)){p=cat.find(x=>x.id===id);if(p)break}if(!p)return;const e=cart.find(i=>i.id===id);if(e)e.qty+=1;else cart.push({id:p.id,name:p.name,price:p.price,qty:1});updateCart()}
+function changeQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);updateCart()}
+function removeFromCart(id){cart=cart.filter(i=>i.id!==id);updateCart()}
+function updateCart(){const c=document.getElementById('cart-items'),b=document.getElementById('order-btn');let t=0,n=0;if(!cart.length){c.innerHTML='<p style="color:#999;text-align:center">Кошик порожній</p>';b.disabled=true}else{let h='';cart.forEach(i=>{const s=i.price*i.qty;t+=s;n+=i.qty;h+=`<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-price">${i.price} грн × ${i.qty} = ${s} грн</div></div><div class="cart-item-controls"><button class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button><span>${i.qty}</span><button class="qty-btn" onclick="changeQty('${i.id}',1)">+</button><button class="remove-btn" onclick="removeFromCart('${i.id}')">×</button></div></div>`});c.innerHTML=h;b.disabled=false}document.getElementById('count').textContent=n;document.getElementById('total').textContent=t}
+function toggleCart(){isOpen=!isOpen;document.getElementById('cart-content').style.display=isOpen?'block':'none';document.getElementById('toggle-icon').textContent=isOpen?'▼':'▲'}
+function showOrderForm(){if(!cart.length)return;let s='<strong>Ваше замовлення:</strong><br>',t=0;cart.forEach(i=>{const x=i.price*i.qty;t+=x;s+=`• ${i.name} × ${i.qty} — ${x} грн<br>`});s+=`<br><strong>Разом: ${t} грн</strong>`;document.getElementById('order-summary').innerHTML=s;document.getElementById('order-modal').classList.add('show')}
+function closeOrderForm(){document.getElementById('order-modal').classList.remove('show')}
+async function submitOrder(e){e.preventDefault();const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),city=document.getElementById('city').value.trim(),address=document.getElementById('address').value.trim(),comment=document.getElementById('comment').value.trim(),btn=document.getElementById('submit-btn');let total=0,items='';cart.forEach(i=>{const s=i.price*i.qty;total+=s;items+=`• ${i.name} × ${i.qty} = ${s} грн\n`});const text=`🛒 НОВЕ ЗАМОВЛЕННЯ з сайту\n\n👤 Ім'я: ${name}\n📞 Телефон: ${phone}\n🏙 Місто: ${city}\n📍 Адреса: ${address}${comment?'\n💬 Коментар: '+comment:''}\n\n📦 Товари:\n${items}\n💰 Разом: ${total} грн`;btn.disabled=true;btn.textContent='Надсилаємо...';try{const r=await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text})});const j=await r.json();if(j.ok){document.getElementById('modal-content').innerHTML=`<div class="success-message"><h2>✅ Замовлення прийнято!</h2><p>Дякуємо, <strong>${name}</strong>!</p><p>Ми скоро зв'яжемося: <strong>${phone}</strong></p><p style="margin-top:20px;color:#666;font-size:14px">Сума: <strong>${total} грн</strong></p><button class="btn-submit" style="margin-top:20px;width:100%" onclick="finishOrder()">Закрити</button></div>`;cart=[];updateCart()}else throw new Error(j.description||'Помилка')}catch(err){alert('Не вдалося надіслати.\n'+err.message);btn.disabled=false;btn.textContent='Підтвердити замовлення'}}
+function finishOrder(){closeOrderForm();location.reload()}
+document.getElementById('order-modal').addEventListener('click',function(e){if(e.target===this)closeOrderForm()});
+showCategory('tech');
+</script>
+</body>
+</html>
