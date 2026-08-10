@@ -65,7 +65,7 @@
     </header>
     <div class="tabs">
         <div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
-        <div class="tab" onclick="showCategory('socks')">🧦 Шкарпетки</div>
+        <div class="tab" onclick="showCategory('beauty')">✨ Краса і здоров'я</div>
         <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
     </div>
     <div class="products" id="products"></div>
@@ -120,9 +120,23 @@
         const DEHYDRATOR_IMG = 'https://i.imgur.com/ugoCrzG.jpeg';
 
         const catalog = {
-            socks: [
-                { id: 's1', name: "Шкарпетки чоловічі спортивні", price: 55, img: "socks1.jpg" },
-                { id: 's2', name: "Шкарпетки чоловічі спортивні 2", price: 55, img: "socks2.jpg" }
+            beauty: [
+                { id: 'b1', name: "Вакуумний антицелюлітний масажер Cupping Massager", price: 595, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/07/6774037387_vakuumnij-antitselyulitnij-masazher.webp" },
+                { id: 'b2', name: "Епілятор VGR V-733 USB 6 в 1", price: 930, img: "https://phantom-drop.com.ua/wp-content/uploads/2024/09/5978882332_epilyator-vgr-v-733.png" },
+                { id: 'b3', name: "Праска для волосся VGR V-522 45 Вт", price: 715, img: "https://phantom-drop.com.ua/wp-content/uploads/2024/09/6254732720_utyuzhok-dlya-vypryamleniya.webp" },
+                { id: 'b4', name: "Жіночий тример 4 в 1 LY-1102", price: 480, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/01/7010295121_zhinochij-trimer-4.png" },
+                { id: 'b5', name: "Фен-стайлер KM-6911 синій 1000 Вт", price: 1720, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490355059_fen-stajler-dlya-volossya.png" },
+                { id: 'b6', name: "Фен-стайлер KM-6910 чорний 1000 Вт", price: 1720, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490348579_fen-stajler-dlya-volossya.png" },
+                { id: 'b7', name: "Плойка для локонів VGR V-583", price: 1149, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/06/7490340331_plojka-dlya-lokoniv.png" },
+                { id: 'b8', name: "Епілятор VGR V-706 на 18 пінцетів", price: 570, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427658136_zhinochij-kompaktnij-bezdrotovij.png" },
+                { id: 'b9', name: "Епілятор VGR V-705 з підсвічуванням", price: 615, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427644603_zhinochij-bezdrotovij-akumulyatornij.png" },
+                { id: 'b10', name: "Епілятор 2в1 VGR V-758", price: 615, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427634388_zhinochij-bezdrotovij-epilyator.png" },
+                { id: 'b11', name: "Епілятор VGR V-753 з LED-екраном", price: 680, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427629181_akumulyatornij-epilyator-vgr.png" },
+                { id: 'b12', name: "Набір VGR V-752 5 в 1", price: 949, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7427587960_zhinochij-nabir-vgr.png" },
+                { id: 'b13', name: "Маска LED 7 в 1 для світлотерапії", price: 595, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/7381411135_maska-led-7.png" },
+                { id: 'b14', name: "Фрезер для манікюру LIna Mercedes 2000", price: 525, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/03/5978817827_frezer-dlya-manikyura.jpg" },
+                { id: 'b15', name: "Машинка для манікюру 6 в 1", price: 360, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/5978817961_mashinka-dlya-manikyura.jpg" },
+                { id: 'b16', name: "М'які бігуді Reclaire Cosmetics", price: 325, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/5978848188_myaki-bigudi-reclaire.png" }
             ],
             underwear: [
                 { id: 'u1', name: "Жіночі трусики (сліпи)", price: 449, img: "trusiki1.jpg" },
@@ -167,7 +181,7 @@
         function showCategory(cat) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => {
-                if ((cat === 'socks' && t.textContent.includes('Шкарпетки')) ||
+                if ((cat === 'beauty' && t.textContent.includes('Краса')) ||
                     (cat === 'underwear' && t.textContent.includes('Труси')) ||
                     (cat === 'tech' && t.textContent.includes('Техніка'))) {
                     t.classList.add('active');
