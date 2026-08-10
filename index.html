@@ -9,12 +9,13 @@
 </style>
 </head>
 <body>
-<header><h1>Комфорт Маркет</h1><p>Техніка · Краса · Косметика · Інструмент</p></header>
+<header><h1>Комфорт Маркет</h1><p>Техніка · Краса · Кухня · Інструмент</p></header>
 <div class="tabs">
 <div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
 <div class="tab" onclick="showCategory('beauty')">✨ Краса і здоров'я</div>
 <div class="tab" onclick="showCategory('cosmetics')">💄 Косметика</div>
 <div class="tab" onclick="showCategory('tools')">🔧 Авто і інструмент</div>
+<div class="tab" onclick="showCategory('kitchen')">🍳 Все для кухні</div>
 </div>
 <div class="products" id="products"></div>
 <div class="cart" id="cart">
@@ -96,14 +97,32 @@ tools:[
 {id:'a15',name:"Освіжувач повітря Вертоліт Vert02",price:445,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7406650148_avtomobilnij-osvizhuvach-povitrya.png"},
 {id:'a16',name:"Шуруповерт CB-3996 64V (2 АКБ, кейс)",price:1050,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/05/7374620542_akumulyatornij-shurupovert-cb-3996.png"}
 ],
+kitchen:[
+{id:'k1',name:"Мультипіч Rainberg RB-2330 аерогриль 8,5 л",price:2355,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599901234_multipich-rainberg-rb-2330.png"},
+{id:'k2',name:"Чайник зі свистком Huwangfu 3.5L",price:480,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599902001_chajnyk-zi-svystkom-3-5l.png"},
+{id:'k3',name:"Чайник зі свистком Huwangfu 2.5L",price:455,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599902002_chajnyk-zi-svystkom-2-5l.png"},
+{id:'k4',name:"Картоплерізка Potato Chipper",price:420,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599903001_kartoplerezka.png"},
+{id:'k5',name:"Блендерний набір 4 в 1 BITEK BT-327 1600Вт",price:805,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599904001_blendernyj-nabir-bitek.png"},
+{id:'k6',name:"Міксер ручний BITEK BT-6629A 1000Вт",price:585,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599905001_mikser-bitek-1000.png"},
+{id:'k7',name:"Аерофритюрниця BITEK BT-5384 12л 4600Вт",price:2205,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599906001_aerofrytyurnycya-bitek.png"},
+{id:'k8',name:"М'ясорубка 4в1 Rainberg RB-676 3800W",price:1825,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599907001_myasorubka-rainberg.png"},
+{id:'k9',name:"Аерофритюрниця Zepline ZP-00376 13л 4200Вт",price:3500,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599908001_aerofrytyurnycya-zepline-376.png"},
+{id:'k10',name:"Прес для часнику GARLIC PRESS",price:230,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599909001_pres-chasnyku.png"},
+{id:'k11',name:"Аерофритюрниця Zepline ZP-00341 13л 4200Вт",price:3060,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599910001_aerofrytyurnycya-zepline-341.png"},
+{id:'k12',name:"Кавомолка Zepline ZP-00371 500Вт",price:525,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599911001_kavomolka-zepline.png"},
+{id:'k13',name:"Блендер стаціонарний 3в1 Zepline ZP-081 2000W",price:1285,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599912001_blender-zepline-081.png"},
+{id:'k14',name:"Плита електрична Zepline ZP-062 інфрачервона",price:2560,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599913001_plyta-zepline-062.png"},
+{id:'k15',name:"Міксер ручний BITEK BT-6630 1200Вт",price:595,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599914001_mikser-bitek-1200.png"},
+{id:'k16',name:"Вакууматор Rainberg RB-2335",price:715,img:"https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599915001_vakuumator-rainberg.png"}
+],
 tech:[
-{id:'t1',name:"Електрична сушарка для овочів та фруктів Rainberg RB-2291 (1000W) Food Dehydrator Multifunction",price:1500,img:DEHYDRATOR_IMG,desc:"Заготовка продуктов на зиму с сушкой Rainberg RB-2291. 5 рівнів, 1000Вт, температура 35–70°C.",specs:"<strong>Характеристики</strong>• Потужність: 1000 Вт<br>• 5 піддонів<br>• 35–70 °C"},
-{id:'t2',name:"Блендер Crownberg CB-6220",price:600,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/09/3542956322_blender-crownberg-cb-6220.jpg",desc:"Занурювальний блендер 300 Вт, нержавіюча сталь.",specs:"<strong>Особливості</strong>• 300 Вт<br>• Занурювальний"},
-{id:'t3',name:"Електроплита спіральна GRUNHELM GHP-5811",price:500,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4045553193_elektroplita-spiralna-grunhelm.png",desc:"Настільна спіральна плита 1000 Вт, конфорка 17 см.",specs:"<strong>Характеристики</strong>• 1000 Вт<br>• 1 конфорка 17 см"},
-{id:'t4',name:"Кавомашина Crownberg CB-1566 Espresso 1000 Вт з капучинатором",price:3000,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4016954260_kofemashina-poluavtomaticheskaya-crownberg.png",desc:"Напівавтомат 15 бар, капучино, резервуар 1,6 л.",specs:"<strong>Характеристики</strong>• 1000 Вт<br>• 15 бар<br>• 1,6 л"}
+{id:'t1',name:"Електрична сушарка для овочів та фруктів Rainberg RB-2291 (1000W)",price:1500,img:DEHYDRATOR_IMG,desc:"Сушарка Rainberg RB-2291, 5 рівнів, 1000Вт, 35–70°C.",specs:"<strong>Характеристики</strong>• 1000 Вт<br>• 5 піддонів<br>• 35–70 °C"},
+{id:'t2',name:"Блендер Crownberg CB-6220",price:600,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/09/3542956322_blender-crownberg-cb-6220.jpg",desc:"Занурювальний блендер 300 Вт.",specs:"• 300 Вт<br>• Занурювальний"},
+{id:'t3',name:"Електроплита спіральна GRUNHELM GHP-5811",price:500,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4045553193_elektroplita-spiralna-grunhelm.png",desc:"Настільна плита 1000 Вт, конфорка 17 см.",specs:"• 1000 Вт<br>• 1 конфорка"},
+{id:'t4',name:"Кавомашина Crownberg CB-1566 Espresso з капучинатором",price:3000,img:"https://phantom-drop.com.ua/wp-content/uploads/2022/10/4016954260_kofemashina-poluavtomaticheskaya-crownberg.png",desc:"Напівавтомат 15 бар, 1,6 л.",specs:"• 1000 Вт<br>• 15 бар"}
 ]
 };
-function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&t.textContent.includes('інструмент')))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';catalog[cat].forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc||item.specs?' wide':'');const desc=item.desc?`<div class="desc">${item.desc.replace(/\n/g,'<br>')}</div>`:'';const specs=item.specs?`<div class="specs">${item.specs}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3>${item.name}</h3>${desc}${specs}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
+function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&t.textContent.includes('інструмент'))||(cat==='kitchen'&&t.textContent.includes('кухні')))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';catalog[cat].forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc||item.specs?' wide':'');const desc=item.desc?`<div class="desc">${item.desc.replace(/\n/g,'<br>')}</div>`:'';const specs=item.specs?`<div class="specs">${item.specs}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3>${item.name}</h3>${desc}${specs}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
 function addToCart(id){let p=null;for(const cat of Object.values(catalog)){p=cat.find(x=>x.id===id);if(p)break}if(!p)return;const e=cart.find(i=>i.id===id);if(e)e.qty+=1;else cart.push({id:p.id,name:p.name,price:p.price,qty:1});updateCart()}
 function changeQty(id,d){const i=cart.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);updateCart()}
 function removeFromCart(id){cart=cart.filter(i=>i.id!==id);updateCart()}
