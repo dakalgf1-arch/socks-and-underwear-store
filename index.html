@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шкарпетки & Труси</title>
+    <title>Магазин техніки та краси</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; padding-bottom: 120px; }
@@ -60,13 +60,13 @@
 </head>
 <body>
     <header>
-        <h1>🧦 Шкарпетки & Труси</h1>
-        <p>Якісна білизна та техніка</p>
+        <h1>🛒 Інтернет-магазин</h1>
+        <p>Техніка · Краса · Косметика</p>
     </header>
     <div class="tabs">
         <div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
         <div class="tab" onclick="showCategory('beauty')">✨ Краса і здоров'я</div>
-        <div class="tab" onclick="showCategory('underwear')">👙 Труси</div>
+        <div class="tab" onclick="showCategory('cosmetics')">💄 Косметика</div>
     </div>
     <div class="products" id="products"></div>
     <div class="cart" id="cart">
@@ -138,9 +138,23 @@
                 { id: 'b15', name: "Машинка для манікюру 6 в 1", price: 360, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/05/5978817961_mashinka-dlya-manikyura.jpg" },
                 { id: 'b16', name: "М'які бігуді Reclaire Cosmetics", price: 325, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/5978848188_myaki-bigudi-reclaire.png" }
             ],
-            underwear: [
-                { id: 'u1', name: "Жіночі трусики (сліпи)", price: 449, img: "trusiki1.jpg" },
-                { id: 'u2', name: "Жіночі трусики (висока посадка)", price: 479, img: "trusiki2.jpg" }
+            cosmetics: [
+                { id: 'c1', name: "Носочки зволожуючі BIOAQUA Vitamin E Manuka Honey", price: 135, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269442032_nosochki-dlya-nig.png" },
+                { id: 'c2', name: "Крем для ніг Sadoer Collagen Anti-Aging 60г", price: 160, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269316243_zhivilnij-krem-dlya.png" },
+                { id: 'c3', name: "Капсули для волосся Sadoer аргана/макадамія/олива", price: 245, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269179108_kapsuli-dlya-likuvannya.png" },
+                { id: 'c4', name: "Капсули для волосся Sadoer аргана/жожоба", price: 245, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269156023_kapsuli-dlya-rozgladzhennya.png" },
+                { id: 'c5', name: "Капсули для волосся Sadoer аргана/ліщина", price: 245, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269076780_vidnovlyuyuchi-kapsuli-dlya.png" },
+                { id: 'c6', name: "Набір кремів для рук Images (м'ята, чорниця, сакура)", price: 215, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269028378_nabir-kremiv-dlya.png" },
+                { id: 'c7', name: "Набір кремів для рук 5 в 1 Sadoer", price: 215, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7269003640_nabir-kremiv-dlya.png" },
+                { id: 'c8', name: "Набір кремів для рук Luofmiss квіткові", price: 215, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268973476_nabir-kremiv-dlya.png" },
+                { id: 'c9', name: "Набір кремів для рук Luofmiss Котик", price: 215, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268962337_nabir-kremiv-dlya.png" },
+                { id: 'c10', name: "Набір кремів для рук OneSpring 5 шт", price: 215, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/04/7268829508_krem-dlya-ruk.png" },
+                { id: 'c11', name: "Ополіскувач Sadoer кава 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6908165668_opoliskuvach-dlya-rota.png" },
+                { id: 'c12', name: "Ополіскувач Sadoer персик 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904189299_opoliskuvach-dlya-rota.png" },
+                { id: 'c13', name: "Ополіскувач Sadoer зелений чай 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904186276_opoliskuvach-dlya-rota.png" },
+                { id: 'c14', name: "Ополіскувач Sadoer кавун 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904183589_opoliskuvach-dlya-rota.png" },
+                { id: 'c15', name: "Ополіскувач Sadoer виноград 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904178746_opoliskuvach-dlya-rota.png" },
+                { id: 'c16', name: "Ополіскувач Sadoer кокос 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904171569_opoliskuvach-dlya-rota.png" }
             ],
             tech: [
                 {
@@ -182,7 +196,7 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => {
                 if ((cat === 'beauty' && t.textContent.includes('Краса')) ||
-                    (cat === 'underwear' && t.textContent.includes('Труси')) ||
+                    (cat === 'cosmetics' && t.textContent.includes('Косметика')) ||
                     (cat === 'tech' && t.textContent.includes('Техніка'))) {
                     t.classList.add('active');
                 }
