@@ -61,12 +61,13 @@
 <body>
     <header>
         <h1>Комфорт Маркет</h1>
-        <p>Техніка · Краса · Косметика — зручний вибір для дому</p>
+        <p>Техніка · Краса · Косметика · Інструмент</p>
     </header>
     <div class="tabs">
         <div class="tab active" onclick="showCategory('tech')">🔌 Техніка</div>
         <div class="tab" onclick="showCategory('beauty')">✨ Краса і здоров'я</div>
         <div class="tab" onclick="showCategory('cosmetics')">💄 Косметика</div>
+        <div class="tab" onclick="showCategory('tools')">🔧 Авто і інструмент</div>
     </div>
     <div class="products" id="products"></div>
     <div class="cart" id="cart">
@@ -156,6 +157,24 @@
                 { id: 'c15', name: "Ополіскувач Sadoer виноград 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904178746_opoliskuvach-dlya-rota.png" },
                 { id: 'c16', name: "Ополіскувач Sadoer кокос 20 стіків", price: 195, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/10/6904171569_opoliskuvach-dlya-rota.png" }
             ],
+            tools: [
+                { id: 'a1', name: "Сходи-стрем'янка 4.2м телескопічна алюмінієва", price: 4010, img: "https://phantom-drop.com.ua/wp-content/uploads/2026/07/7599883580_shodi-stremyanka-42m-2121.png" },
+                { id: 'a2', name: "Автомагнітола JSD-520 USB Bluetooth", price: 540, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6499086770_avtomagnitola-jsd-520.png" },
+                { id: 'a3', name: "Мультиметр цифровий DT-832", price: 310, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6499065160_multimetr-czifrovij-digital.png" },
+                { id: 'a4', name: "Автохолодильник 7.5 л 12V", price: 1075, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6499042790_portativnij-avtoholodilnik-75.png" },
+                { id: 'a5', name: "Домкрат електричний 12V 1500 кг", price: 3015, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6499018946_domkrat-elektrichnij-avtomobilnij.png" },
+                { id: 'a6', name: "Інвертор 300W 12V→220V", price: 3285, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498994162_invertor-zhivlennya-uin2.png" },
+                { id: 'a7', name: "Алмазний різак 2в1 для скла та плитки", price: 375, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498968994_almaznij-rizak-2-v-1.png" },
+                { id: 'a8', name: "Аварійний комплект автомобіліста 6 в 1", price: 545, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498942485_avarijnij-komplekt-dlya.png" },
+                { id: 'a9', name: "Рулетка 3в1 RL-40", price: 1175, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498915806_ruletka-3v1-rl-40.png" },
+                { id: 'a10', name: "Лазерний далекомір RL-41 40м", price: 905, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498888560_lazernij-dalekomir-rl-41.png" },
+                { id: 'a11', name: "Аромадифузор для авто XT016", price: 540, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498860105_portativnij-akumulyatornij-aromadifuzor.png" },
+                { id: 'a12', name: "Акумуляторна повітродувка СВ-3991", price: 865, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498831540_akumulyatorna-povitroduvka-dlya.png" },
+                { id: 'a13', name: "Аромадифузор для авто XT015", price: 680, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498801906_portativnij-akumulyatornij-aromadifuzor.png" },
+                { id: 'a14', name: "Аромадифузор для авто XT045", price: 680, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498771092_portativnij-akumulyatornij-aromadifuzor.png" },
+                { id: 'a15', name: "Освіжувач повітря Вертоліт Vert02", price: 445, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498738736_avtomobilnij-osvizhuvach-povitrya.png" },
+                { id: 'a16', name: "Шуруповерт CB-3996 64V (2 АКБ, кейс)", price: 1050, img: "https://phantom-drop.com.ua/wp-content/uploads/2025/08/6498705026_akumulyatornij-shurupovert-cb-3996.png" }
+            ],
             tech: [
                 {
                     id: 't1',
@@ -197,7 +216,8 @@
             document.querySelectorAll('.tab').forEach(t => {
                 if ((cat === 'beauty' && t.textContent.includes('Краса')) ||
                     (cat === 'cosmetics' && t.textContent.includes('Косметика')) ||
-                    (cat === 'tech' && t.textContent.includes('Техніка'))) {
+                    (cat === 'tech' && t.textContent.includes('Техніка')) ||
+                    (cat === 'tools' && t.textContent.includes('інструмент'))) {
                     t.classList.add('active');
                 }
             });
