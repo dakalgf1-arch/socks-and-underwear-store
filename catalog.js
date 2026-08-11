@@ -1,1 +1,1 @@
-PLACEHOLDER
+window.catalog={beauty:[],cosmetics:[],tools:[],kitchen:[],clothes:[],tech:[]};
