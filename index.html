@@ -117,15 +117,15 @@ src="https://www.facebook.com/tr?id=1730574808278891&ev=PageView&noscript=1"/></
 <div class="form-group"><label>Коментар</label><textarea id="comment"></textarea></div>
 <div class="modal-buttons"><button type="button" class="btn-cancel" onclick="closeOrderForm()">Скасувати</button><button type="submit" class="btn-submit" id="submit-btn">Підтвердити</button></div>
 </form></div></div>
-<script src="clothes.js"></script>
-<script src="tools.js"></script>
-<script src="catalog.js"></script>
+<script src="clothes.js?v=3"></script>
+<script src="tools.js?v=3"></script>
+<script src="catalog.js?v=3"></script>
 <script>
 let cart=[],isOpen=true;
 const TELEGRAM_BOT_TOKEN='8791143315:AAHIkx6LMQKn5E9ZIiXzUhms998M7WDXkiI';
 const TELEGRAM_CHAT_ID='5393712604';
 const catalog=window.catalog||{};
-function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&t.textContent.includes('інструмент'))||(cat==='kitchen'&&t.textContent.includes('кухні'))||(cat==='clothes'&&t.textContent.includes('Одяг')))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';(catalog[cat]||[]).forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc?' wide':'');const desc=item.desc?`<div class="desc">${item.desc}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name}" onclick="showProductDetail('${item.id}')" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3 onclick="showProductDetail('${item.id}')">${item.name}</h3>${desc}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
+function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&(t.textContent.includes('інструмент')||t.textContent.includes('Авто')))||(cat==='kitchen'&&t.textContent.includes('кухні'))||(cat==='clothes'&&t.textContent.includes('Одяг')))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';(catalog[cat]||[]).forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc?' wide':'');const desc=item.desc?`<div class="desc">${item.desc}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name}" onclick="showProductDetail('${item.id}')" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3 onclick="showProductDetail('${item.id}')">${item.name}</h3>${desc}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
 function findProduct(id){for(const[cat,items]of Object.entries(catalog)){const p=(items||[]).find(x=>x.id===id);if(p)return{product:p,category:cat}}return null}
 let currentProductImages=[],currentSlideIdx=0;
 function slideProduct(dir){if(!currentProductImages.length)return;currentSlideIdx=(currentSlideIdx+dir+currentProductImages.length)%currentProductImages.length;document.getElementById('pm-img').src=currentProductImages[currentSlideIdx];document.querySelectorAll('.pm-dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlideIdx))}
