@@ -3,19 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Комфорт Маркет</title>
+<title>Комфорт Маркет — техніка, краса, кухня</title>
+<meta name="description" content="Комфорт Маркет — інтернет-магазин техніки, краси, кухні та інструменту.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Комфорт Маркет">
 <meta property="og:title" content="Комфорт Маркет — техніка, краса, кухня, інструмент">
 <meta property="og:description" content="Купуйте техніку, товари для краси, кухні та авто. Швидке замовлення та доставка по Україні.">
 <meta property="og:image" content="https://i.imgur.com/ugoCrzG.jpeg">
 <meta property="og:url" content="https://kom-m.shop/">
+<link rel="canonical" href="https://kom-m.shop/">
 </head>
 <body>
-<p style="font-family:Arial;text-align:center;margin-top:40px">Завантаження магазину…</p>
+<p id="ld" style="font-family:Arial;text-align:center;margin-top:40px">Завантаження магазину…</p>
 <script>
-fetch('https://cdn.jsdelivr.net/gh/dakalgf1-arch/socks-and-underwear-store@4fd2da1e98b661bfe131576085a01646650bb7a7/index.html')
-  .then(r=>r.text())
-  .then(html=>{ document.open(); document.write(html); document.close(); })
-  .catch(()=>{ location.href='https://dakalgf1-arch.github.io/socks-and-underwear-store/'; });
+(function(){
+  var urls=[
+    'https://cdn.jsdelivr.net/gh/dakalgf1-arch/socks-and-underwear-store@4fd2da1e98b661bfe131576085a01646650bb7a7/index.html',
+    'https://raw.githack.com/dakalgf1-arch/socks-and-underwear-store/4fd2da1e98b661bfe131576085a01646650bb7a7/index.html',
+    'https://raw.githubusercontent.com/dakalgf1-arch/socks-and-underwear-store/4fd2da1e98b661bfe131576085a01646650bb7a7/index.html'
+  ];
+  function tryLoad(i){
+    if(i>=urls.length){document.getElementById('ld').innerHTML='Не вдалося завантажити. <a href="https://cdn.jsdelivr.net/gh/dakalgf1-arch/socks-and-underwear-store@4fd2da1e98b661bfe131576085a01646650bb7a7/index.html">Відкрити магазин</a>';return;}
+    fetch(urls[i]).then(function(r){if(!r.ok)throw new Error('fail');return r.text()}).then(function(html){
+      document.open();document.write(html);document.close();
+    }).catch(function(){tryLoad(i+1)});
+  }
+  tryLoad(0);
+})();
 </script>
 </body>
 </html>
