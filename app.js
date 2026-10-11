@@ -18,7 +18,111 @@ function updateCart(){const el=document.getElementById('cart-items'),cnt=documen
 function toggleCart(){isOpen=!isOpen;document.getElementById('cart-content').style.display=isOpen?'block':'none';document.getElementById('toggle-icon').textContent=isOpen?'▼':'▲'}
 function showOrderForm(){if(!cart.length)return;let s='<strong>Замовлення:</strong><br>',t=0;cart.forEach(i=>{const x=i.price*i.qty;t+=x;s+=`• ${i.name} × ${i.qty} — ${x} грн<br>`});s+=`<br><strong>Разом: ${t} грн</strong>`;document.getElementById('order-summary').innerHTML=s;document.getElementById('order-modal').classList.add('show');try{if(typeof fbq==='function')fbq('track','InitiateCheckout',{value:t,currency:'UAH',num_items:cart.reduce((a,i)=>a+i.qty,0)})}catch(e){}}
 function closeOrderForm(){document.getElementById('order-modal').classList.remove('show')}
-async function submitOrder(e){e.preventDefault();const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),city=document.getElementById('city').value.trim(),address=document.getElementById('address').value.trim(),comment=document.getElementById('comment').value.trim(),btn=document.getElementById('submit-btn');let total=0,items='';cart.forEach(i=>{const s=i.price*i.qty;total+=s;items+=`• ${i.name} × ${i.qty} = ${s} грн`+(i.link?`\n  🔗 ${i.link}`:'')+`\n`});const text=`🛒 НОВЕ ЗАМОВЛЕННЯ\n\n👤 ${name}\n📞 ${phone}\n🏙 ${city}\n📍 ${address}${comment?'\n💬 '+comment:''}\n\n📦 Товари:\n${items}\n💰 Разом: ${total} грн`;btn.disabled=true;btn.textContent='Надсилаємо...';try{const r=await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text})});const j=await r.json();if(j.ok){document.getElementById('modal-content').innerHTML=`<div class="success-message"><h2>✅ Замовлення прийнято!</h2><p>Дякуємо, <strong>${name}</strong>!</p><p>${phone}</p><p>Сума: <strong>${total} грн</strong></p><button class="btn-submit" style="margin-top:20px;width:100%" onclick="finishOrder()">Закрити</button></div>`;try{if(typeof fbq==='function'){fbq('track','Lead',{value:total,currency:'UAH'});fbq('track','Purchase',{value:total,currency:'UAH'})}}catch(e){}cart=[];updateCart()}else throw new Error(j.description||'Помилка')}catch(err){alert('Помилка: '+err.message);btn.disabled=false;btn.textContent='Підтвердити'}}
+async function sendTelegram(text){
+  const r=await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      chat_id:TELEGRAM_CHAT_ID,
+      text:text,
+      disable_web_page_preview:true
+    })
+  });
+  const j=await r.json();
+  if(!j.ok) throw new Error(j.description||('HTTP '+r.status));
+  return j;
+}
+function splitTelegramText(text,maxLen){
+  maxLen=maxLen||3900;
+  if(text.length<=maxLen) return [text];
+  const parts=[];
+  let rest=text;
+  while(rest.length>maxLen){
+    let cut=rest.lastIndexOf('\n',maxLen);
+    if(cut<maxLen*0.5) cut=maxLen;
+    parts.push(rest.slice(0,cut).trimEnd());
+    rest=rest.slice(cut).trimStart();
+  }
+  if(rest) parts.push(rest);
+  return parts;
+}
+async function submitOrder(e){
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const city=document.getElementById('city').value.trim();
+  const address=document.getElementById('address').value.trim();
+  const comment=document.getElementById('comment').value.trim();
+  const btn=document.getElementById('submit-btn');
+  if(!name||!phone||!city||!address){
+    alert('Заповніть усі обов\'язкові поля');
+    return;
+  }
+  if(!cart.length){
+    alert('Кошик порожній');
+    return;
+  }
+  let total=0, items='';
+  cart.forEach(i=>{
+    const s=i.price*i.qty;
+    total+=s;
+    items+=`• ${i.name} × ${i.qty} = ${s} грн`;
+    if(i.link) items+=`\n  🔗 ${i.link}`;
+    items+='\n';
+  });
+  const orderId=Date.now().toString(36).toUpperCase();
+  const when=new Date().toLocaleString('uk-UA',{timeZone:'Europe/Kyiv'});
+  const text=
+`🛒 НОВЕ ЗАМОВЛЕННЯ #${orderId}
+🕐 ${when}
+
+👤 ${name}
+📞 ${phone}
+🏙 ${city}
+📍 ${address}${comment?'\n💬 '+comment:''}
+
+📦 Товари:
+${items}
+💰 Разом: ${total} грн`;
+
+  btn.disabled=true;
+  btn.textContent='Надсилаємо...';
+  try{
+    const parts=splitTelegramText(text,3900);
+    for(let i=0;i<parts.length;i++){
+      const chunk=parts.length>1
+        ? `(${i+1}/${parts.length})\n`+parts[i]
+        : parts[i];
+      await sendTelegram(chunk);
+      if(i<parts.length-1) await new Promise(r=>setTimeout(r,350));
+    }
+    document.getElementById('modal-content').innerHTML=
+      `<div class="success-message"><h2>✅ Замовлення прийнято!</h2>`+
+      `<p>Дякуємо, <strong>${name}</strong>!</p>`+
+      `<p>${phone}</p>`+
+      `<p>Сума: <strong>${total} грн</strong></p>`+
+      `<p style="font-size:13px;color:#666">№ ${orderId}</p>`+
+      `<button class="btn-submit" style="margin-top:20px;width:100%" onclick="finishOrder()">Закрити</button></div>`;
+    try{
+      if(typeof fbq==='function'){
+        fbq('track','Lead',{value:total,currency:'UAH'});
+        fbq('track','Purchase',{value:total,currency:'UAH'});
+      }
+    }catch(e){}
+    cart=[];
+    updateCart();
+  }catch(err){
+    const msg=String(err&&err.message||err);
+    let hint='';
+    if(/chat not found|bot was blocked|Forbidden/i.test(msg))
+      hint='\n\nВідкрийте бота в Telegram і натисніть /start, потім спробуйте знову.';
+    else if(/too long|message is too long/i.test(msg))
+      hint='\n\nПовідомлення занадто довге. Спробуйте менше товарів у кошику.';
+    alert('Помилка відправки: '+msg+hint);
+    btn.disabled=false;
+    btn.textContent='Підтвердити';
+  }
+}
 function finishOrder(){closeOrderForm();location.reload()}
 document.getElementById('order-modal').addEventListener('click',function(e){if(e.target===this)closeOrderForm()});
 (function initFromUrl(){const id=new URLSearchParams(location.search).get('product');if(id&&findProduct(id)){showProductDetail(id,false)}else{showCategory('tech')}})();
