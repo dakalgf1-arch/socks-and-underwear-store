@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kom-m.shop/sitemap.xml
