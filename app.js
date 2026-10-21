@@ -3,7 +3,7 @@ if(window.catalogTools)window.catalog.tools=window.catalogTools;
 if(window.catalogClothes)window.catalog.clothes=window.catalogClothes;
 if(window.catalogMilitary)window.catalog.military=window.catalogMilitary;
 let cart=[],isOpen=true;
-const TELEGRAM_BOT_TOKEN='8791143315:AAHIkx6LMQKn5E9ZIiXzUhms998M7WDXkiI';
+const TELEGRAM_BOT_TOKEN='8791143315:AAH9iOlFYfAajxOtrk3MHJ7QKL9kOJiqUDY';
 const TELEGRAM_CHAT_ID='5393712604';
 const catalog=window.catalog||{};
 function showCategory(cat){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>{if((cat==='beauty'&&t.textContent.includes('Краса'))||(cat==='cosmetics'&&t.textContent.includes('Косметика'))||(cat==='tech'&&t.textContent.includes('Техніка'))||(cat==='tools'&&(t.textContent.includes('інструмент')||t.textContent.includes('Авто')))||(cat==='kitchen'&&t.textContent.includes('кухні'))||(cat==='clothes'&&t.textContent.includes('Одяг'))||(cat==='military'&&(t.textContent.includes('Воєнторг')||t.textContent.includes('воєн'))))t.classList.add('active')});const c=document.getElementById('products');c.innerHTML='';(catalog[cat]||[]).forEach(item=>{const d=document.createElement('div');d.className='product'+(item.desc?' wide':'');const desc=item.desc?`<div class="desc">${item.desc}</div>`:'';d.innerHTML=`<img src="${item.img}" alt="${item.name} — купити в Комфорт Маркет" onclick="showProductDetail('${item.id}')" onerror="this.src='https://via.placeholder.com/320x240?text=Фото'"><h3 onclick="showProductDetail('${item.id}')">${item.name}</h3>${desc}<div class="price">${item.price} грн</div><button class="btn-buy" onclick="addToCart('${item.id}')">Купити</button>`;c.appendChild(d)})}
